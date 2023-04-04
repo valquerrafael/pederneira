@@ -36,12 +36,24 @@ public class Institution {
         return this.name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getAcronym() {
         return this.acronym;
     }
 
+    public void setAcronym(String acronym) {
+        this.acronym = acronym;
+    }
+
     public String getPhone() {
         return this.phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
 }
