@@ -66,4 +66,11 @@ public class InstitutionController {
         return "redirect:/";
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable(name = "id") Integer id) {
+        this.repository.deleteById(id);
+
+        return "redirect:/";
+    }
+
 }
