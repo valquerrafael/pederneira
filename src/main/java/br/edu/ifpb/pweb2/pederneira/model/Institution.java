@@ -1,9 +1,13 @@
 package br.edu.ifpb.pweb2.pederneira.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="institution")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Institution {
 
     @Id
@@ -12,21 +16,6 @@ public class Institution {
     private String name;
     private String acronym;
     private String phone;
-
-    public Institution() {}
-
-    public Institution(
-        Integer id,
-        String name,
-        String acronym,
-        String phone
-    ) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.acronym = acronym;
-        this.phone = phone;
-    }
 
     public Integer getId() {
         return this.id;
