@@ -33,7 +33,7 @@ public class InstitutionController {
         if (!result.hasErrors())
             this.repository.save(institution);
 
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     @GetMapping("/read/{id}")
@@ -50,6 +50,13 @@ public class InstitutionController {
 
         model.addAttribute("institutions", institutions);
         return "institution/readall";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable(name = "id") Integer id) {
+        this.repository.deleteById(id);
+
+        return "redirect:/";
     }
 
 }
