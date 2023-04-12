@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Flintstone - Institution Register</title>
+    <title>Create</title>
 </head>
 <body>
 
-<h1>Institution Register</h1>
-<form method="POST" th:action="@{/institution/register}" th:object="${institution}">
+<h1>Institution Create</h1>
+<form method="POST" th:action="@{/institution/create}" th:object="${institution}">
     <label>Name</label> <input type="text" th:field="*{name}" /> <br />
     <label>Acronym</label> <input type="text" th:field="*{acronym}" /> <br />
     <label>Phone</label> <input type="tel" th:field="*{phone}" /> <br />

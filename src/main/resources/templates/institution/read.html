@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Read</title>
+</head>
+<body>
+
+<h1>Institution Read</h1>
+<div th:object="${institution}">
+    id: <span th:text="${institution.id}"></span> <br />
+    name: <span th:text="${institution.name}"></span> <br />
+    acronym: <span th:text="${institution.acronym}"></span> <br />
+    phone: <span th:text="${institution.phone}"></span>
+</div>
+
+</body>
+</html>
