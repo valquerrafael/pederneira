@@ -8,10 +8,10 @@
 
 <h1>semester update</h1>
 <form method="POST" th:action="@{'/semester/update/' + ${semester.id}}" th:object="${semester}">
-    <label>Year <input type="text" th:field="${semester.year}" /></label> <br />
-    <label>Semester <input type="text" th:field="${semester.semester}" /></label> <br />
-    <label>Start <input type="text" th:field="${semester.start}" /></label> <br />
-    <label>End <input type="text" th:field="${semester.end}" /></label> <br />
+    <label>year <input type="text" th:field="${semester.year}" /></label> <br />
+    <label>semester <input type="text" th:field="${semester.semester}" /></label> <br />
+    <label>start <input type="text" th:field="${semester.start}" /></label> <br />
+    <label>end <input type="text" th:field="${semester.end}" /></label> <br />
     <input type="submit" value="Register">
 </form>
 
