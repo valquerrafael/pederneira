@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+</head>
+<body>
+
+<h1>Semester Update</h1>
+<form method="POST" th:action="@{'/semester/update/' + ${semester.id}}" th:object="${semester}">
+    <label>Year <input type="text" th:field="${semester.year}" /></label> <br />
+    <label>Semester <input type="text" th:field="${semester.semester}" /></label> <br />
+    <label>Start <input type="text" th:field="${semester.start}" /></label> <br />
+    <label>End <input type="text" th:field="${semester.end}" /></label> <br />
+    <input type="submit" value="Register">
+</form>
+
+</body>
+</html>

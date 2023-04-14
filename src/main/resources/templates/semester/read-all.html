@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Read All</title>
+</head>
+<body>
+
+<h1>Semester Read All</h1>
+<div th:each="semester : ${semesters}">
+    <label>Year <span th:text="${semester.year}"></span></label> <br />
+    <label>Semester <span th:text="${semester.semester}"></span></label> <br />
+    <label>Start <span th:text="${semester.start}"></span></label> <br />
+    <label>End <span th:text="${semester.end}"></span></label> <br />
+    <br />
+</div>
+
+</body>
+</html>

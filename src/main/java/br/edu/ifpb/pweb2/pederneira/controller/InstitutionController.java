@@ -17,13 +17,13 @@ public class InstitutionController {
     private InstitutionRepository repository;
 
     @GetMapping("/create")
-    public String getRegisterPage(Institution institution, Model model) {
+    public String getCreatePage(Institution institution, Model model) {
         model.addAttribute("institution", institution);
         return "institution/create";
     }
 
     @PostMapping("/create")
-    public String register(Institution institution) {
+    public String create(Institution institution) {
         this.repository.save(institution);
 
         return "redirect:/";
@@ -55,13 +55,13 @@ public class InstitutionController {
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable(name = "id") Integer id, Institution institution) {
-        Institution institutionInRepository = this.repository.findById(id).orElseThrow();
+        Institution institutionToUpdate = this.repository.findById(id).orElseThrow();
 
-        institutionInRepository.setName(institution.getName());
-        institutionInRepository.setAcronym(institution.getAcronym());
-        institutionInRepository.setPhone(institution.getPhone());
+        institutionToUpdate.setName(institution.getName());
+        institutionToUpdate.setAcronym(institution.getAcronym());
+        institutionToUpdate.setPhone(institution.getPhone());
 
-        this.repository.save(institutionInRepository);
+        this.repository.save(institutionToUpdate);
 
         return "redirect:/";
     }
