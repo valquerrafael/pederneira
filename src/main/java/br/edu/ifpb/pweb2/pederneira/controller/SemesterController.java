@@ -19,11 +19,12 @@ public class SemesterController {
 
     @Autowired
     private SemesterRepository repository;
+    private final String templatesDirectory = "semester";
 
     @GetMapping("/create")
     public String getCreatePage(Semester semester, Model model) {
         model.addAttribute("semester", semester);
-        return "semester/create";
+        return this.templatesDirectory + "/create";
     }
 
     @PostMapping("/create")
@@ -38,7 +39,7 @@ public class SemesterController {
         Semester semester = this.repository.findById(id).orElseThrow();
 
         model.addAttribute("semester", semester);
-        return "semester/read";
+        return this.templatesDirectory + "/read";
     }
 
     @GetMapping("/read-all")
@@ -46,7 +47,7 @@ public class SemesterController {
         List<Semester> semesters = this.repository.findAll();
 
         model.addAttribute("semesters", semesters);
-        return "semester/read-all";
+        return this.templatesDirectory + "/read-all";
     }
 
     @GetMapping("/update/{id}")
@@ -54,7 +55,7 @@ public class SemesterController {
         Semester semester = this.repository.findById(id).orElseThrow();
 
         model.addAttribute("semester", semester);
-        return "semester/update";
+        return this.templatesDirectory + "/update";
     }
 
     @PostMapping("/update/{id}")

@@ -15,11 +15,12 @@ public class InstitutionController {
 
     @Autowired
     private InstitutionRepository repository;
+    private final String templatesDirectory = "institution";
 
     @GetMapping("/create")
     public String getCreatePage(Institution institution, Model model) {
         model.addAttribute("institution", institution);
-        return "institution/create";
+        return this.templatesDirectory + "/create";
     }
 
     @PostMapping("/create")
@@ -34,7 +35,7 @@ public class InstitutionController {
         Institution institution = this.repository.findById(id).orElseThrow();
 
         model.addAttribute("institution", institution);
-        return "institution/read";
+        return this.templatesDirectory + "/read";
     }
 
     @GetMapping("/read-all")
@@ -42,7 +43,7 @@ public class InstitutionController {
         List<Institution> institutions = this.repository.findAll();
 
         model.addAttribute("institutions", institutions);
-        return "institution/read-all";
+        return this.templatesDirectory + "/read-all";
     }
 
     @GetMapping("/update/{id}")
@@ -50,7 +51,7 @@ public class InstitutionController {
         Institution institution = this.repository.findById(id).orElseThrow();
 
         model.addAttribute("institution", institution);
-        return "institution/update";
+        return this.templatesDirectory + "/update";
     }
 
     @PostMapping("/update/{id}")
