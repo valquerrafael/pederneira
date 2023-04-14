@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>create</title>
+</head>
+<body>
+
+<h1>declaration create</h1>
+<form method="POST" th:action="@{/declaration/create}" th:object="${declaration}">
+    <label>receptionDate <input type="text" th:field="${declaration.receptionDate}" /></label> <br />
+    <label>observation <input type="text" th:field="${declaration.observation}" /></label> <br />
+    <input type="submit" value="Register">
+</form>
+
+<!--/*@thymesVar id="declaration" type="br.edu.ifpb.pweb2.pederneira.model.Declaration"*/-->
+</body>
+</html>
