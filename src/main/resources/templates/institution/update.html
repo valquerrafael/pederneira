@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update</title>
+    <title>update</title>
 </head>
 <body>
 
-<h1>Institution Update</h1>
+<h1>institution update</h1>
 <form method="POST" th:action="@{'/institution/update/' + ${institution.id}}" th:object="${institution}">
     <label>Name  <input type="text" th:field="${institution.name}" /></label> <br />
     <label>Acronym <input type="text" th:field="${institution.acronym}" /></label> <br />
