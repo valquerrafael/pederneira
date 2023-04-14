@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>read</title>
+</head>
+<body>
+
+<h1>declaration read</h1>
+<div th:object="${declaration}">
+    id: <span th:text="${declaration.id}"></span> <br />
+    receptionDate: <span th:text="${declaration.receptionDate}"></span> <br />
+    observation: <span th:text="${declaration.observation}"></span> <br />
+</div>
+
+<!--/*@thymesVar id="declaration" type="br.edu.ifpb.pweb2.pederneira.model.Declaration"*/-->
+</body>
+</html>
