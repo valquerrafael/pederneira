@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>read all</title>
+</head>
+<body>
+
+<h1>student read all</h1>
+<div th:each="student : ${students}">
+    id: <span th:text="${student.id}"></span> <br />
+    name: <span th:text="${student.name}"></span> <br />
+    registration: <span th:text="${student.registration}"></span> <br />
+    <br />
+</div>
+
+<!--/*@thymesVar id="students" type="java.util.List"*/-->
+<!--/*@thymesVar id="student" type="br.edu.ifpb.pweb2.pederneira.model.Student"*/-->
+</body>
+</html>

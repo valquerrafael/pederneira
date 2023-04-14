@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>update</title>
+</head>
+<body>
+
+<h1>student update</h1>
+<form method="POST" th:action="@{'/student/update/' + ${student.id}}" th:object="${student}">
+    <label>id <input type="text" th:field="${student.id}" /></label> <br />
+    <label>name <input type="text" th:field="${student.name}" /></label> <br />
+    <label>registration <input type="text" th:field="${student.registration}" /></label> <br />
+    <input type="submit" value="Register">
+</form>
+
+<!--/*@thymesVar id="student" type="br.edu.ifpb.pweb2.pederneira.model.Student"*/-->
+</body>
+</html>
