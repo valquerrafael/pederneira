@@ -8,16 +8,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 @Entity
-@Table(name="declaration")
+@Table(name="enrollment")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Declaration {
+public class Enrollment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date receptionDate;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "semester_id")
+    private Semester semester;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_id")
+    private Student student;
     private String observation;
 
     public Integer getId() {
@@ -30,6 +36,22 @@ public class Declaration {
 
     public void setReceptionDate(Date name) {
         this.receptionDate = name;
+    }
+
+    public Semester getSemester() {
+        return this.semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
+
+    public Student getStudent() {
+        return this.student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     public String getObservation() {

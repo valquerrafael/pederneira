@@ -1,7 +1,7 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
-import br.edu.ifpb.pweb2.pederneira.model.Declaration;
-import br.edu.ifpb.pweb2.pederneira.repository.DeclarationRepository;
+import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
+import br.edu.ifpb.pweb2.pederneira.repository.EnrollmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,58 +13,58 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/declaration")
-public class DeclarationController {
+@RequestMapping("/enrollment")
+public class EnrollmentController {
 
     @Autowired
-    private DeclarationRepository repository;
-    private final String templatesDirectory = "declaration";
+    private EnrollmentRepository repository;
+    private final String templatesDirectory = "enrollment";
 
     @GetMapping("/create")
-    public String getCreatePage(Declaration declaration, Model model) {
-        model.addAttribute("declaration", declaration);
+    public String getCreatePage(Enrollment enrollment, Model model) {
+        model.addAttribute("enrollment", enrollment);
         return this.templatesDirectory + "/create";
     }
 
     @PostMapping("/create")
-    public String create(Declaration declaration) {
-        this.repository.save(declaration);
+    public String create(Enrollment enrollment) {
+        this.repository.save(enrollment);
 
         return "redirect:/";
     }
 
     @GetMapping("/read/{id}")
     public String readOne(@PathVariable(name = "id") Integer id, Model model) {
-        Declaration declaration = this.repository.findById(id).orElseThrow();
+        Enrollment enrollment = this.repository.findById(id).orElseThrow();
 
-        model.addAttribute("declaration", declaration);
+        model.addAttribute("enrollment", enrollment);
         return this.templatesDirectory + "/read";
     }
 
     @GetMapping("/read-all")
     public String readAll(Model model) {
-        List<Declaration> declarations = this.repository.findAll();
+        List<Enrollment> enrollments = this.repository.findAll();
 
-        model.addAttribute("declarations", declarations);
+        model.addAttribute("enrollments", enrollments);
         return this.templatesDirectory + "/read-all";
     }
 
     @GetMapping("/update/{id}")
     public String getUpdatePage(@PathVariable(name = "id") Integer id, Model model) {
-        Declaration declaration = this.repository.findById(id).orElseThrow();
+        Enrollment enrollment = this.repository.findById(id).orElseThrow();
 
-        model.addAttribute("declaration", declaration);
+        model.addAttribute("enrollment", enrollment);
         return this.templatesDirectory + "/update";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable(name = "id") Integer id, Declaration declaration) {
-        Declaration declarationToUpdate = this.repository.findById(id).orElseThrow();
+    public String update(@PathVariable(name = "id") Integer id, Enrollment enrollment) {
+        Enrollment enrollmentToUpdate = this.repository.findById(id).orElseThrow();
 
-        declarationToUpdate.setReceptionDate(declaration.getReceptionDate());
-        declarationToUpdate.setObservation(declaration.getObservation());
+        enrollmentToUpdate.setReceptionDate(enrollment.getReceptionDate());
+        enrollmentToUpdate.setObservation(enrollment.getObservation());
 
-        this.repository.save(declarationToUpdate);
+        this.repository.save(enrollmentToUpdate);
 
         return "redirect:/";
     }

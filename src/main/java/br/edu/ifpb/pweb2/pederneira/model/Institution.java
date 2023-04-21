@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name="institution")
 @AllArgsConstructor
@@ -13,12 +15,38 @@ public class Institution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL)
+    private List<Semester> semesters;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "current_semester_id")
+    private Semester currentSemester;
     private String name;
     private String acronym;
     private String phone;
 
+
     public Integer getId() {
         return this.id;
+    }
+
+    public List<Semester> getSemesters() {
+        return this.semesters;
+    }
+
+    public void addSemester(Semester semester) {
+        this.semesters.add(semester);
+    }
+
+    public void removeSemester(Semester semester) {
+        this.semesters.remove(semester);
+    }
+
+    public Semester getCurrentSemester() {
+        return this.currentSemester;
+    }
+
+    public void setCurrentSemester(Semester currentSemester) {
+        this.currentSemester = currentSemester;
     }
 
     public String getName() {

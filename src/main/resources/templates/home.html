@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Start Page</title>
+    <title>Home</title>
 </head>
 <body>
 
-<h1>Goodbye, world!</h1>
+<div th:replace="~{fragments/header}"></div>
+
+<div th:replace="~{fragments/footer}"></div>
 
 </body>
 </html>
