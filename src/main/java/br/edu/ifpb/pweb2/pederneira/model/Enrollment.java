@@ -18,16 +18,20 @@ public class Enrollment {
     private Integer id;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date receptionDate;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "semester_id")
     private Semester semester;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
     private String observation;
 
     public Integer getId() {
         return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Date getReceptionDate() {

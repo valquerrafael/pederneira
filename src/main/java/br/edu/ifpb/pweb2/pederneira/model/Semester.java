@@ -20,7 +20,7 @@ public class Semester {
     private Date start;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date end;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "institution_id")
     private Institution institution;
     private Integer year;
@@ -28,6 +28,10 @@ public class Semester {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Date getStart() {

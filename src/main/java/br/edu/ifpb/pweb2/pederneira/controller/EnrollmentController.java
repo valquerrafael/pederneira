@@ -1,7 +1,9 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
 import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
+import br.edu.ifpb.pweb2.pederneira.model.Student;
 import br.edu.ifpb.pweb2.pederneira.repository.EnrollmentRepository;
+import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,9 @@ import java.util.List;
 public class EnrollmentController {
 
     @Autowired
-    private EnrollmentRepository repository;
+    private EnrollmentRepository enrollmentRepository;
+    @Autowired
+    private StudentRepository studentRepository;
     private final String templatesDirectory = "enrollment";
 
     @GetMapping("/create")
@@ -28,14 +32,20 @@ public class EnrollmentController {
 
     @PostMapping("/create")
     public String create(Enrollment enrollment) {
-        this.repository.save(enrollment);
+        Student student = this.studentRepository.findById(enrollment.getStudent().getId()).orElseThrow();
+
+        enrollment.setStudent(student);
+        Enrollment savedEnrollment = this.enrollmentRepository.save(enrollment);
+
+        student.setCurrentEnrollment(savedEnrollment);
+        this.studentRepository.save(student);
 
         return "redirect:/";
     }
 
     @GetMapping("/read/{id}")
     public String readOne(@PathVariable(name = "id") Integer id, Model model) {
-        Enrollment enrollment = this.repository.findById(id).orElseThrow();
+        Enrollment enrollment = this.enrollmentRepository.findById(id).orElseThrow();
 
         model.addAttribute("enrollment", enrollment);
         return this.templatesDirectory + "/read";
@@ -43,7 +53,7 @@ public class EnrollmentController {
 
     @GetMapping("/read-all")
     public String readAll(Model model) {
-        List<Enrollment> enrollments = this.repository.findAll();
+        List<Enrollment> enrollments = this.enrollmentRepository.findAll();
 
         model.addAttribute("enrollments", enrollments);
         return this.templatesDirectory + "/read-all";
@@ -51,7 +61,7 @@ public class EnrollmentController {
 
     @GetMapping("/update/{id}")
     public String getUpdatePage(@PathVariable(name = "id") Integer id, Model model) {
-        Enrollment enrollment = this.repository.findById(id).orElseThrow();
+        Enrollment enrollment = this.enrollmentRepository.findById(id).orElseThrow();
 
         model.addAttribute("enrollment", enrollment);
         return this.templatesDirectory + "/update";
@@ -59,19 +69,19 @@ public class EnrollmentController {
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable(name = "id") Integer id, Enrollment enrollment) {
-        Enrollment enrollmentToUpdate = this.repository.findById(id).orElseThrow();
+        Enrollment enrollmentToUpdate = this.enrollmentRepository.findById(id).orElseThrow();
 
         enrollmentToUpdate.setReceptionDate(enrollment.getReceptionDate());
         enrollmentToUpdate.setObservation(enrollment.getObservation());
 
-        this.repository.save(enrollmentToUpdate);
+        this.enrollmentRepository.save(enrollmentToUpdate);
 
         return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable(name = "id") Integer id) {
-        this.repository.deleteById(id);
+        this.enrollmentRepository.deleteById(id);
 
         return "redirect:/";
     }

@@ -15,9 +15,9 @@ public class Institution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "institution")
     private List<Semester> semesters;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "current_semester_id")
     private Semester currentSemester;
     private String name;
@@ -27,6 +27,10 @@ public class Institution {
 
     public Integer getId() {
         return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public List<Semester> getSemesters() {

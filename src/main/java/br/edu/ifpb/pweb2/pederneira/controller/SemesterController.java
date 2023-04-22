@@ -25,21 +25,25 @@ public class SemesterController {
     private final String templatesDirectory = "semester";
 
     @GetMapping("/create")
-    public String getCreatePage(Semester semester, Model model) {
-        List<Institution> institutions = this.institutionRepository.findAll();
-
-        model.addAttribute("institutions", institutions);
+    public String getCreatePage(Model model) {
+        Institution institution = new Institution();
+        Semester semester = new Semester();
+        semester.setInstitution(institution);
         model.addAttribute("semester", semester);
         return this.templatesDirectory + "/create";
     }
 
+    // TODO: verify error institution identifier is replaced from X to Y
     @PostMapping("/create")
     public String create(Semester semester) {
-        Institution institution = this.institutionRepository.findById(semester.getInstitution().getId()).orElseThrow();
-        Semester createdSemester = this.semesterRepository.save(semester);
+        Institution institutionToBeUpdated = this.institutionRepository.findById(semester.getInstitution().getId()).orElseThrow();
+        Semester semesterToBeCreated = new Semester(
+            null, semester.getStart(), semester.getEnd(), institutionToBeUpdated, semester.getYear(), semester.getSemester()
+        );
+        Semester createdSemester = this.semesterRepository.save(semesterToBeCreated);
 
-        institution.setCurrentSemester(createdSemester);
-        this.institutionRepository.save(institution);
+        institutionToBeUpdated.setCurrentSemester(createdSemester);
+        this.institutionRepository.save(institutionToBeUpdated);
 
         return "redirect:/";
     }

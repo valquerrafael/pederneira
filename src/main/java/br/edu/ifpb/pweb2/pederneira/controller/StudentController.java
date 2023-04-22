@@ -1,6 +1,8 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
+import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Student;
+import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +19,9 @@ import java.util.List;
 public class StudentController {
 
     @Autowired
-    private StudentRepository repository;
+    private StudentRepository studentRepository;
+    @Autowired
+    private InstitutionRepository institutionRepository;
     private final String templatesDirectory = "student";
 
     @GetMapping("/create")
@@ -28,14 +32,14 @@ public class StudentController {
 
     @PostMapping("/create")
     public String create(Student student) {
-        this.repository.save(student);
+        this.studentRepository.save(student);
 
         return "redirect:/";
     }
 
     @GetMapping("/read/{id}")
     public String readOne(@PathVariable(name = "id") Integer id, Model model) {
-        Student student = this.repository.findById(id).orElseThrow();
+        Student student = this.studentRepository.findById(id).orElseThrow();
 
         model.addAttribute("student", student);
         return this.templatesDirectory + "/read";
@@ -43,7 +47,7 @@ public class StudentController {
 
     @GetMapping("/read-all")
     public String readAll(Model model) {
-        List<Student> students = this.repository.findAll();
+        List<Student> students = this.studentRepository.findAll();
 
         model.addAttribute("students", students);
         return this.templatesDirectory + "/read-all";
@@ -51,7 +55,7 @@ public class StudentController {
 
     @GetMapping("/update/{id}")
     public String getUpdatePage(@PathVariable(name = "id") Integer id, Model model) {
-        Student student = this.repository.findById(id).orElseThrow();
+        Student student = this.studentRepository.findById(id).orElseThrow();
 
         model.addAttribute("student", student);
         return this.templatesDirectory + "/update";
@@ -59,19 +63,21 @@ public class StudentController {
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable(name = "id") Integer id, Student student) {
-        Student studentToUpdate = this.repository.findById(id).orElseThrow();
+        Student studentToUpdate = this.studentRepository.findById(id).orElseThrow();
+        Institution institution = this.institutionRepository.findById(student.getCurrentInstitution().getId()).orElseThrow();
 
         studentToUpdate.setName(student.getName());
         studentToUpdate.setRegistration(student.getRegistration());
+        studentToUpdate.setCurrentInstitution(institution);
 
-        this.repository.save(studentToUpdate);
+        this.studentRepository.save(studentToUpdate);
 
         return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable(name = "id") Integer id) {
-        this.repository.deleteById(id);
+        this.studentRepository.deleteById(id);
 
         return "redirect:/";
     }
