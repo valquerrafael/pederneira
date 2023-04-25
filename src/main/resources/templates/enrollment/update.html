@@ -7,7 +7,7 @@
 <body>
 
 <h1>enrollment update</h1>
-<form method="POST" th:action="@{'/enrollment/update/' + ${enrollment.id}}" th:object="${enrollment}">
+<form th:method="put" th:action="@{'/enrollment/update/' + ${enrollment.id}}" th:object="${enrollment}">
     <label>receptionDate  <input type="text" th:field="${enrollment.receptionDate}" /></label> <br />
     <label>observation <input type="text" th:field="${enrollment.observation}" /></label> <br />
     <input type="submit" value="Register">

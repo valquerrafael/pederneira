@@ -7,10 +7,11 @@
 <body>
 
 <h1>enrollment create</h1>
-<form method="POST" th:action="@{/enrollment/create}" th:object="${enrollment}">
+<form th:method="post" th:action="@{/enrollment/create}" th:object="${enrollment}">
     <label>receptionDate <input type="text" th:field="${enrollment.receptionDate}" /></label> <br />
     <label>observation <input type="text" th:field="${enrollment.observation}" /></label> <br />
     <label>student id <input type="text" th:field="${enrollment.student.id}" /></label> <br />
+    <label>semester id <input type="text" th:field="${enrollment.semester.id}" /></label> <br />
     <input type="submit" value="Register">
 </form>
 

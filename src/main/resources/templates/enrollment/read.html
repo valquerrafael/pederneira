@@ -11,6 +11,7 @@
     id: <span th:text="${enrollment.id}"></span> <br />
     receptionDate: <span th:text="${enrollment.receptionDate}"></span> <br />
     observation: <span th:text="${enrollment.observation}"></span> <br />
+    <button th:action="@{'/enrollment/delete/' + ${enrollment.id}}">Delete</button>
 </div>
 
 <!--/*@thymesVar id="enrollment" type="br.edu.ifpb.pweb2.pederneira.model.Enrollment"*/-->

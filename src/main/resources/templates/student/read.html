@@ -11,6 +11,7 @@
     id: <span th:text="${student.id}"></span> <br />
     name: <span th:text="${student.name}"></span> <br />
     registration: <span th:text="${student.registration}"></span> <br />
+    <button th:action="@{'/student/delete/' + ${student.id}}">Delete</button>
 </div>
 
 <!--/*@thymesVar id="student" type="br.edu.ifpb.pweb2.pederneira.model.Student"*/-->

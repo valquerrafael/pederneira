@@ -12,6 +12,7 @@
     name: <span th:text="${institution.name}"></span> <br />
     acronym: <span th:text="${institution.acronym}"></span> <br />
     phone: <span th:text="${institution.phone}"></span>
+    <button th:action="@{'/institution/delete/' + ${institution.id}}">Delete</button>
 </div>
 
 <!--/*@thymesVar id="institution" type="br.edu.ifpb.pweb2.pederneira.model.Institution"*/-->

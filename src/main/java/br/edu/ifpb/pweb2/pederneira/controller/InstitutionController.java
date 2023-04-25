@@ -4,91 +4,130 @@ import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Semester;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/institution")
 public class InstitutionController {
 
-    @Autowired
+    @Resource
     private InstitutionRepository institutionRepository;
-    @Autowired
+    @Resource
     private SemesterRepository semesterRepository;
-    private final String templatesDirectory = "institution";
 
     @GetMapping("/create")
-    public String getCreatePage(Institution institution, Model model) {
-        model.addAttribute("institution", institution);
-        return this.templatesDirectory + "/create";
+    public ModelAndView getCreatePage(Institution institution, ModelAndView model) {
+        model.addObject("institution", institution);
+        model.setViewName("/institution/create");
+        return model;
     }
 
     @PostMapping("/create")
-    public String create(
-        Institution institution,
-        BindingResult result,
-        RedirectAttributes redirectAttributes
-    ) {
+    public ModelAndView create(Institution institution, BindingResult bindingResult, ModelAndView model) {
+        if (bindingResult.hasErrors()) {
+            model.addObject("error", "Erro ao cadastrar instituição");
+            model.setViewName("redirect:/");
+            return model;
+        }
+
+        if (this.institutionRepository.findById(institution.getId()).isPresent()) {
+            model.addObject("error", "Instituição já cadastrada");
+            model.setViewName("redirect:/");
+            return model;
+        }
+
         this.institutionRepository.save(institution);
 
-        return "redirect:/";
+        model.setViewName("redirect:/");
+        return model;
     }
 
     @GetMapping("/read/{id}")
-    public String readOne(@PathVariable(name = "id") Integer id, Model model) {
-        Institution institution = this.institutionRepository.findById(id).orElseThrow();
+    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model) {
+        Optional<Institution> institution = this.institutionRepository.findById(id);
 
-        model.addAttribute("institution", institution);
-        return this.templatesDirectory + "/read";
+        if (institution.isEmpty()) {
+            model.addObject("error", "Instituição não encontrada");
+            model.setViewName("redirect:/");
+            return model;
+        }
+
+        model.addObject("institution", institution.get());
+        model.setViewName("/institution/read");
+        return model;
     }
 
     @GetMapping("/read-all")
-    public String readAll(Model model) {
-        List<Institution> institutions = this.institutionRepository.findAll();
-
-        model.addAttribute("institutions", institutions);
-        return this.templatesDirectory + "/read-all";
+    public ModelAndView readAll(ModelAndView model) {
+        model.addObject("institutions", this.institutionRepository.findAll());
+        model.setViewName("/institution/read-all");
+        return model;
     }
 
     @GetMapping("/update/{id}")
-    public String getUpdatePage(@PathVariable(name = "id") Integer id, Model model) {
-        Institution institution = this.institutionRepository.findById(id).orElseThrow();
+    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView model) {
+        Optional<Institution> institution = this.institutionRepository.findById(id);
 
-        model.addAttribute("institution", institution);
-        return this.templatesDirectory + "/update";
+        if (institution.isEmpty()) {
+            model.addObject("error", "Instituição não encontrada");
+            model.setViewName("redirect:/");
+            return model;
+        }
+
+        model.addObject("institution", institution.get());
+        model.setViewName("/institution/update");
+        return model;
     }
 
-    @PostMapping("/update/{id}")
-    public String update(@PathVariable(name = "id") Integer id, Institution institution) {
-        Semester semester = this.semesterRepository.findById(institution.getCurrentSemester().getId()).orElseThrow();
-        Institution institutionToUpdate = this.institutionRepository.findById(id).orElseThrow();
-
-        if (!Objects.equals(semester.getInstitution().getId(), institutionToUpdate.getId())) {
-            throw new RuntimeException("Semestre não pertence a instituição");
+    @PutMapping("/update")
+    public ModelAndView update(Institution institution, BindingResult bindingResult, ModelAndView model) {
+        if (bindingResult.hasErrors()) {
+            model.addObject("error", "Erro ao atualizar instituição");
+            model.setViewName("redirect:/");
+            return model;
         }
+
+        Optional<Institution> institutionOptional = this.institutionRepository.findById(institution.getId());
+
+        if (institutionOptional.isEmpty()) {
+            model.addObject("error", "Instituição não encontrada");
+            model.setViewName("redirect:/");
+            return model;
+        }
+
+        Optional<Semester> semester = this.semesterRepository.findById(institution.getCurrentSemester().getId());
+
+        if (semester.isEmpty()) {
+            model.addObject("error", "Semestre atual não encontrado para instituição");
+            model.setViewName("redirect:/");
+            return model;
+        }
+
+        Institution institutionToUpdate = institutionOptional.get();
 
         institutionToUpdate.setName(institution.getName());
         institutionToUpdate.setAcronym(institution.getAcronym());
         institutionToUpdate.setPhone(institution.getPhone());
-        institutionToUpdate.setCurrentSemester(semester);
+        institutionToUpdate.setCurrentSemester(semester.get());
 
         this.institutionRepository.save(institutionToUpdate);
 
-        return "redirect:/";
+        model.setViewName("redirect:/");
+        return model;
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable(name = "id") Integer id) {
+    @DeleteMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
         this.institutionRepository.deleteById(id);
 
-        return "redirect:/";
+        model.setViewName("redirect:/");
+        return model;
     }
 
 }

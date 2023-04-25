@@ -7,7 +7,7 @@
 <body>
 
 <h1>semester create</h1>
-<form method="POST" th:action="@{/semester/create}" th:object="${semester}">
+<form th:method="post" th:action="@{/semester/create}" th:object="${semester}">
 <!--    <input type="hidden" th:field="${semester.id}" />-->
 <!--    <input type="hidden" th:field="${semester.institution.semesters}" />-->
 <!--    <input type="hidden" th:field="${semester.institution.currentSemester}" />-->
