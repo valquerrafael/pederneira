@@ -6,16 +6,15 @@
           rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
           crossorigin="anonymous">
-    <title>Form</title>
+    <title>Form Basic Input</title>
 </head>
 <body>
 
-    <form th:fragment="form(title)"
-          class="w-25 bg-light text-dark border border-secondary rounded justify-content-center p-2">
-        <h3 th:text="${title}"
-            class="text-center">
-        </h3>
-    </form>
+    <div th:fragment="form-input(label, type)"
+         class="form-group">
+        <label th:text="${label}" for="input"></label>
+        <input th:type="${type}" class="form-control" id="input">
+    </div>
 
 </body>
 </html>
