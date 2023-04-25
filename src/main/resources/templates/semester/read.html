@@ -8,10 +8,14 @@
 
 <h1>semester read</h1>
 <div th:object="${semester}">
+    <input type="hidden" th:field="${semester.id}" />
     year: <span th:text="${semester.year}"></span> <br />
     semester: <span th:text="${semester.semester}"></span> <br />
     start: <span th:text="${semester.start}"></span> <br />
-    end: <span th:text="${semester.end}"></span>
+    end: <span th:text="${semester.end}"></span> <br />
+    <form th:method="delete" th:action="@{'/semester/delete/' + ${semester.id}}">
+        <button type="submit">Delete</button>
+    </form>
 </div>
 
 <!--/*@thymesVar id="semester" type="br.edu.ifpb.pweb2.pederneira.model.Semester"*/-->

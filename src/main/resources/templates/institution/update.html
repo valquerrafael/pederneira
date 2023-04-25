@@ -7,10 +7,11 @@
 <body>
 
 <h1>institution update</h1>
-<form method="POST" th:action="@{'/institution/update/' + ${institution.id}}" th:object="${institution}">
+<form th:method="put" th:action="@{'/institution/update/' + ${institution.id}}" th:object="${institution}">
     <label>name  <input type="text" th:field="${institution.name}" /></label> <br />
     <label>acronym <input type="text" th:field="${institution.acronym}" /></label> <br />
     <label>phone <input type="tel" th:field="${institution.phone}" /></label> <br />
+    <label>current semester id <input type="number" th:field="${institution.currentSemester.id}" /></label> <br />
     <input type="submit" value="Register">
 </form>
 

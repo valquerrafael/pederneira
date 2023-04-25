@@ -7,7 +7,7 @@
 <body>
 
 <h1>institution create</h1>
-<form method="POST" th:action="@{/institution/create}" th:object="${institution}">
+<form th:method="post" th:action="@{/institution/create}" th:object="${institution}">
     <label>name <input type="text" th:field="${institution.name}" /></label> <br />
     <label>acronym <input type="text" th:field="${institution.acronym}" /></label> <br />
     <label>phone <input type="tel" th:field="${institution.phone}" /></label> <br />

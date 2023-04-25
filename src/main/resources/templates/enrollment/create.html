@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>create</title>
+</head>
+<body>
+
+<h1>enrollment create</h1>
+<form th:method="post" th:action="@{/enrollment/create}" th:object="${enrollment}">
+    <label>receptionDate <input type="text" th:field="${enrollment.receptionDate}" /></label> <br />
+    <label>observation <input type="text" th:field="${enrollment.observation}" /></label> <br />
+    <label>student id <input type="text" th:field="${enrollment.student.id}" /></label> <br />
+    <label>semester id <input type="text" th:field="${enrollment.semester.id}" /></label> <br />
+    <input type="submit" value="Register">
+</form>
+
+<!--/*@thymesVar id="enrollment" type="br.edu.ifpb.pweb2.pederneira.model.Enrollment"*/-->
+</body>
+</html>
