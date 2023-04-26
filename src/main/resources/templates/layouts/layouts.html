@@ -1,0 +1,11 @@
+<div th:fragment="register-layout(entityName)">
+    <header th:replace="~{fragments/header}"></header>
+    <main th:replace="~{fragments/form :: form('Cadastro', 'Cadastrar', ${entityName} + '-register-inputs')}"></main>
+    <footer th:replace="~{fragments/footer}"></footer>
+</div>
+
+<div th:fragment="update-layout(entityName)">
+    <header th:replace="~{fragments/header}"></header>
+    <main th:replace="~{fragments/form :: form('Atualização', 'Atualizar', ${entityName} + '-update-inputs')}"></main>
+    <footer th:replace="~{fragments/footer}"></footer>
+</div>

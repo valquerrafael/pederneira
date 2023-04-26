@@ -1,0 +1,54 @@
+<!-- Text -->
+<div th:fragment="input-text(label)"
+     class="form-group">
+    <label th:text="${label}" for="inputText"></label>
+    <input type="text" class="form-control" id="inputText">
+</div>
+
+<div th:fragment="input-text-value(label, value)"
+     class="form-group">
+    <label th:text="${label}" for="inputTextValue"></label>
+    <input type="text" class="form-control" id="inputTextValue" th:value="${value}">
+</div>
+
+
+<!-- Number -->
+<div th:fragment="input-number(label)"
+     class="form-group">
+    <label th:text="${label}" for="inputNumber"></label>
+    <input type="number" class="form-control" id="inputNumber">
+</div>
+
+<div th:fragment="input-number-value(label, value)"
+     class="form-group">
+  <label th:text="${label}" for="inputNumberValue"></label>
+  <input type="number" class="form-control" id="inputNumberValue" th:value="${value}">
+</div>
+
+
+<!-- Tel -->
+<div th:fragment="input-tel(label)"
+     class="form-group">
+    <label th:text="${label}" for="inputTel"></label>
+    <input type="tel" class="form-control" id="inputTel">
+</div>
+
+<div th:fragment="input-tel-value(label, value)"
+     class="form-group">
+  <label th:text="${label}" for="inputTelValue"></label>
+  <input type="tel" class="form-control" id="inputTelValue" th:value="${value}">
+</div>
+
+
+<!-- Date -->
+<div th:fragment="input-date(label)"
+     class="form-group">
+    <label th:text="${label}" for="inputDate"></label>
+    <input type="date" class="form-control" id="inputDate">
+</div>
+
+<div th:fragment="input-date-value(label, value)"
+     class="form-group">
+  <label th:text="${label}" for="inputDateValue"></label>
+  <input type="date" class="form-control" id="inputDateValue">
+</div>

@@ -1,0 +1,49 @@
+<!-- Institution -->
+<div th:fragment="institution-register-inputs">
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-text('Nome')}"></div>
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-text('Sigla')}"></div>
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-tel('Telefone')}"></div>
+</div>
+
+<div th:fragment="institution-update-inputs(institution)">
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-text-value('Nome', ${institution.name})}"></div>
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-text-value('Sigla', ${institution.acronym})}"></div>
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-tel('Telefone')}"></div>
+  <!--  TODO: adicionar dropdown de períodos  -->
+</div>
+
+
+<!-- Student -->
+<div th:fragment="student-register-inputs">
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-text('Nome')}"></div>
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-text('Matrícula')}"></div>
+</div>
+
+<div th:fragment="student-update-inputs(student)">
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-text-value('Nome', ${student.name})}"></div>
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-text-value('Matrícula', ${student.registration})}"></div>
+  <!--  TODO: adicionar dropdown de instituições  -->
+</div>
+
+
+<!-- Semester -->
+<div th:fragment="semester-register-inputs">
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-date('Início')}"></div>
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-date('Fim')}"></div>
+  <!--  TODO: adicionar dropdown de instituições  -->
+  <!--  TODO: adicionar dropdown de ano  -->
+</div>
+
+<div th:fragment="semester-update-inputs(semester)">
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-date-value('Início', ${semester.start})}"></div>
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-date-value('Fim', ${semester.end})}"></div>
+</div>
+
+
+<!-- Enrollment -->
+<div th:fragment="enrollment-register-inputs">
+  <!-- TODO: adicionar dropdown de estudantes  -->
+  <!-- TODO: adicionar dropdown de períodos  -->
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-date('Data de recepção')}"></div>
+  <div th:replace="~{fragments/inputs/basic-inputs :: input-text('Observação')}"></div>
+</div>

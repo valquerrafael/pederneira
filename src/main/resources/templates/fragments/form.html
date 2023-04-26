@@ -1,50 +1,12 @@
-<!--<div th:fragment="input-text(label)"-->
-<!--     class="form-group">-->
-<!--    <label th:text="${label}" for="inputText"></label>-->
-<!--    <input type="text" class="form-control" id="inputText">-->
-<!--</div>-->
-
-<!--<div th:fragment="input-number(label)"-->
-<!--     class="form-group">-->
-<!--    <label th:text="${label}" for="inputNumber"></label>-->
-<!--    <input type="number" class="form-control" id="inputNumber">-->
-<!--</div>-->
-
-<!--<div th:fragment="input-tel(label)"-->
-<!--     class="form-group">-->
-<!--    <label th:text="${label}" for="inputTel"></label>-->
-<!--    <input type="tel" class="form-control" id="inputTel">-->
-<!--</div>-->
-
-<!--<div th:fragment="input-date(label)"-->
-<!--     class="form-group">-->
-<!--    <label th:text="${label}" for="inputDate"></label>-->
-<!--    <input type="date" class="form-control" id="inputDate">-->
-<!--</div>-->
-
-<!--    <div th:replace="~{fragments/form :: input-text('Nome')}"></div>-->
-<!--    <div th:replace="~{fragments/form :: input-number('Ano')}"></div>-->
-<!--    <div th:replace="~{fragments/form :: input-tel('Telefone')}"></div>-->
-<!--    <div th:replace="~{fragments/form :: input-date('Data de nascimento')}"></div>-->
-
-<div th:fragment="inputs">
-    <div class="form-group">
-        <label for="inputText1"></label>
-        <input placeholder="Nome" type="text" class="form-control" id="inputText1">
-    </div>
-</div>
-
-<main th:fragment="form(title, mainButtonAction, inputs)"
+<main th:fragment="form(title, mainButtonAction, inputGroup)"
       class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute">
     <form class="w-25 bg-light text-dark border border-secondary rounded justify-content-center p-2">
-        <h3 th:text="${title}"
-            class="text-center">
-        </h3>
+        <h3 th:text="${title}" class="text-center"></h3>
 
-        <div th:insert="~{fragments/form :: ${inputs}}"></div>
+        <div th:insert="~{fragments/inputs/entities :: ${inputGroup}}"></div>
 
-        <div class="d-flex align-items-center justify-content-between gap-5">
-            <button type="submit" class="btn btn-secondary w-50">Cancelar</button>
+        <div class="d-flex align-items-center justify-content-between gap-5 mt-4">
+            <a th:href="@{/home}" type="submit" class="btn btn-secondary w-50">Cancelar</a>
             <button th:text="${mainButtonAction}" type="submit" class="btn btn-success w-50"></button>
         </div>
     </form>
