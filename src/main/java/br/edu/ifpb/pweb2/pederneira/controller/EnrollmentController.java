@@ -28,7 +28,7 @@ public class EnrollmentController {
     @GetMapping("/create")
     public ModelAndView getCreatePage(Enrollment enrollment, ModelAndView model) {
         model.addObject("enrollment", enrollment);
-        model.setViewName("/enrollment/create");
+        model.setViewName("layouts/enrollment/create");
         return model;
     }
 
@@ -75,75 +75,75 @@ public class EnrollmentController {
         return model;
     }
 
-    @GetMapping("/read/{id}")
-    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        Optional<Enrollment> enrollmentOptional = this.enrollmentRepository.findById(id);
+//    @GetMapping("/read/{id}")
+//    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model) {
+//        Optional<Enrollment> enrollmentOptional = this.enrollmentRepository.findById(id);
+//
+//        if (enrollmentOptional.isEmpty()) {
+//            model.addObject("error", "Declaração não encontrada");
+//            model.setViewName("redirect:/");
+//            return model;
+//        }
+//
+//        model.addObject("enrollment", enrollmentOptional.get());
+//        model.setViewName("/enrollment/read");
+//        return model;
+//    }
+//
+//    @GetMapping("/read-all")
+//    public ModelAndView readAll(ModelAndView model) {
+//        model.addObject("enrollments", this.enrollmentRepository.findAll());
+//        model.setViewName("/enrollment/read-all");
+//        return model;
+//    }
 
-        if (enrollmentOptional.isEmpty()) {
-            model.addObject("error", "Declaração não encontrada");
-            model.setViewName("redirect:/");
-            return model;
-        }
-
-        model.addObject("enrollment", enrollmentOptional.get());
-        model.setViewName("/enrollment/read");
-        return model;
-    }
-
-    @GetMapping("/read-all")
-    public ModelAndView readAll(ModelAndView model) {
-        model.addObject("enrollments", this.enrollmentRepository.findAll());
-        model.setViewName("/enrollment/read-all");
-        return model;
-    }
-
-    @GetMapping("/update/{id}")
-    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        Optional<Enrollment> enrollmentOptional = this.enrollmentRepository.findById(id);
-
-        if (enrollmentOptional.isEmpty()) {
-            model.addObject("error", "Declaração não encontrada");
-            model.setViewName("redirect:/");
-            return model;
-        }
-
-        model.addObject("enrollment", enrollmentOptional.get());
-        model.setViewName("/enrollment/update");
-        return model;
-    }
-
-    @PutMapping("/update")
-    public ModelAndView update(Enrollment enrollment, BindingResult bindingResult, ModelAndView model) {
-        if (bindingResult.hasErrors()) {
-            model.addObject("error", "Erro ao atualizar declaração");
-            model.setViewName("redirect:/");
-            return model;
-        }
-
-        Optional<Enrollment> enrollmentOptional = this.enrollmentRepository.findById(enrollment.getId());
-
-        if (enrollmentOptional.isEmpty()) {
-            model.addObject("error", "Declaração não encontrada");
-            model.setViewName("redirect:/");
-            return model;
-        }
-
-        Enrollment enrollmentToUpdate = enrollmentOptional.get();
-
-        enrollmentToUpdate.setObservation(enrollment.getObservation());
-
-        this.enrollmentRepository.save(enrollmentToUpdate);
-
-        model.setViewName("redirect:/");
-        return model;
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        this.enrollmentRepository.deleteById(id);
-
-        model.setViewName("redirect:/");
-        return model;
-    }
+//    @GetMapping("/update/{id}")
+//    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView model) {
+//        Optional<Enrollment> enrollmentOptional = this.enrollmentRepository.findById(id);
+//
+//        if (enrollmentOptional.isEmpty()) {
+//            model.addObject("error", "Declaração não encontrada");
+//            model.setViewName("redirect:/");
+//            return model;
+//        }
+//
+//        model.addObject("enrollment", enrollmentOptional.get());
+//        model.setViewName("layouts/enrollment/update");
+//        return model;
+//    }
+//
+//    @PutMapping("/update")
+//    public ModelAndView update(Enrollment enrollment, BindingResult bindingResult, ModelAndView model) {
+//        if (bindingResult.hasErrors()) {
+//            model.addObject("error", "Erro ao atualizar declaração");
+//            model.setViewName("redirect:/");
+//            return model;
+//        }
+//
+//        Optional<Enrollment> enrollmentOptional = this.enrollmentRepository.findById(enrollment.getId());
+//
+//        if (enrollmentOptional.isEmpty()) {
+//            model.addObject("error", "Declaração não encontrada");
+//            model.setViewName("redirect:/");
+//            return model;
+//        }
+//
+//        Enrollment enrollmentToUpdate = enrollmentOptional.get();
+//
+//        enrollmentToUpdate.setObservation(enrollment.getObservation());
+//
+//        this.enrollmentRepository.save(enrollmentToUpdate);
+//
+//        model.setViewName("redirect:/");
+//        return model;
+//    }
+//
+//    @DeleteMapping("/delete/{id}")
+//    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
+//        this.enrollmentRepository.deleteById(id);
+//
+//        model.setViewName("redirect:/");
+//        return model;
+//    }
 
 }

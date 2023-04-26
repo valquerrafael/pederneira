@@ -28,7 +28,7 @@ public class StudentController {
     @GetMapping("/create")
     public ModelAndView getCreatePage(Student student, ModelAndView model) {
         model.addObject("student", student);
-        model.setViewName("/student/create");
+        model.setViewName("layouts/student/create");
         return model;
     }
 
@@ -52,27 +52,27 @@ public class StudentController {
         return model;
     }
 
-    @GetMapping("/read/{id}")
-    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        Optional<Student> student = this.studentRepository.findById(id);
-
-        if (student.isEmpty()) {
-            model.addObject("error", "Estudante não encontrado");
-            model.setViewName("redirect:/");
-            return model;
-        }
-
-        model.addObject("student", student.get());
-        model.setViewName("/student/read");
-        return model;
-    }
-
-    @GetMapping("/read-all")
-    public ModelAndView readAll(ModelAndView model) {
-        model.addObject("students", this.studentRepository.findAll());
-        model.setViewName("/student/read-all");
-        return model;
-    }
+//    @GetMapping("/read/{id}")
+//    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model) {
+//        Optional<Student> student = this.studentRepository.findById(id);
+//
+//        if (student.isEmpty()) {
+//            model.addObject("error", "Estudante não encontrado");
+//            model.setViewName("redirect:/");
+//            return model;
+//        }
+//
+//        model.addObject("student", student.get());
+//        model.setViewName("/student/read");
+//        return model;
+//    }
+//
+//    @GetMapping("/read-all")
+//    public ModelAndView readAll(ModelAndView model) {
+//        model.addObject("students", this.studentRepository.findAll());
+//        model.setViewName("/student/read-all");
+//        return model;
+//    }
 
     @GetMapping("/update/{id}")
     public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView model) {
@@ -85,7 +85,7 @@ public class StudentController {
         }
 
         model.addObject("student", student.get());
-        model.setViewName("/student/update");
+        model.setViewName("layouts/student/update");
         return model;
     }
 
@@ -133,12 +133,12 @@ public class StudentController {
         return model;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        this.studentRepository.deleteById(id);
-
-        model.setViewName("redirect:/");
-        return model;
-    }
+//    @DeleteMapping("/delete/{id}")
+//    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
+//        this.studentRepository.deleteById(id);
+//
+//        model.setViewName("redirect:/");
+//        return model;
+//    }
 
 }

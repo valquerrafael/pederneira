@@ -10,7 +10,33 @@
 </head>
 <body>
 
-<div th:replace="~{layouts/layouts :: update-layout('semester')}"></div>
+<div>
+    <header th:replace="~{fragments/header}"></header>
+
+    <main class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute">
+        <form th:method="put" th:object="${semester}"
+              class="w-25 bg-light text-dark border border-secondary rounded justify-content-center p-2">
+            <h3 class="text-center">Atualização</h3>
+
+            <div class="form-group">
+                <label for="start">Início:</label>
+                <input th:value="*{start}" type="date" class="form-control" id="start">
+            </div>
+
+            <div class="form-group">
+                <label for="end">Fim:</label>
+                <input th:value="*{end}" type="date" class="form-control" id="end">
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between gap-5 mt-4">
+                <button type="submit" class="btn btn-success w-50">Atualizar</button>
+                <a th:href="@{/home}" type="submit" class="btn btn-secondary w-50">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <footer th:replace="~{fragments/footer}"></footer>
+</div>
 
 </body>
 </html>

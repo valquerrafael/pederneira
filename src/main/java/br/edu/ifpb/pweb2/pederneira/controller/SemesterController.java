@@ -25,7 +25,7 @@ public class SemesterController {
     @GetMapping("/create")
     public ModelAndView getCreatePage(Semester semester, ModelAndView model) {
         model.addObject("semester", semester);
-        model.setViewName("/semester/create");
+        model.setViewName("layouts/semester/create");
         return model;
     }
 
@@ -61,27 +61,27 @@ public class SemesterController {
         return model;
     }
 
-    @GetMapping("/read/{id}")
-    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        Optional<Semester> semester = this.semesterRepository.findById(id);
-
-        if (semester.isEmpty()) {
-            model.addObject("error", "Semestre não encontrado");
-            model.setViewName("redirect:/");
-            return model;
-        }
-
-        model.addObject("semester", semester.get());
-        model.setViewName("/semester/read");
-        return model;
-    }
-
-    @GetMapping("/read-all")
-    public ModelAndView readAll(ModelAndView model) {
-        model.addObject("semesters", this.semesterRepository.findAll());
-        model.setViewName("/semester/read-all");
-        return model;
-    }
+//    @GetMapping("/read/{id}")
+//    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model) {
+//        Optional<Semester> semester = this.semesterRepository.findById(id);
+//
+//        if (semester.isEmpty()) {
+//            model.addObject("error", "Semestre não encontrado");
+//            model.setViewName("redirect:/");
+//            return model;
+//        }
+//
+//        model.addObject("semester", semester.get());
+//        model.setViewName("/semester/read");
+//        return model;
+//    }
+//
+//    @GetMapping("/read-all")
+//    public ModelAndView readAll(ModelAndView model) {
+//        model.addObject("semesters", this.semesterRepository.findAll());
+//        model.setViewName("/semester/read-all");
+//        return model;
+//    }
 
     @GetMapping("/update/{id}")
     public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView model) {
@@ -94,7 +94,7 @@ public class SemesterController {
         }
 
         model.addObject("semester", semester.get());
-        model.setViewName("/semester/update");
+        model.setViewName("layouts/semester/update");
         return model;
     }
 
@@ -125,13 +125,13 @@ public class SemesterController {
         return model;
     }
 
-    @DeleteMapping("/delete/{id}")
-    @Transactional
-    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        this.semesterRepository.deleteById(id);
-
-        model.setViewName("redirect:/");
-        return model;
-    }
+//    @DeleteMapping("/delete/{id}")
+//    @Transactional
+//    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
+//        this.semesterRepository.deleteById(id);
+//
+//        model.setViewName("redirect:/");
+//        return model;
+//    }
 
 }

@@ -24,7 +24,7 @@ public class InstitutionController {
     @GetMapping("/create")
     public ModelAndView getCreatePage(Institution institution, ModelAndView model) {
         model.addObject("institution", institution);
-        model.setViewName("/institution/create");
+        model.setViewName("layouts/institution/create");
         return model;
     }
 
@@ -48,27 +48,27 @@ public class InstitutionController {
         return model;
     }
 
-    @GetMapping("/read/{id}")
-    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        Optional<Institution> institution = this.institutionRepository.findById(id);
-
-        if (institution.isEmpty()) {
-            model.addObject("error", "Instituição não encontrada");
-            model.setViewName("redirect:/");
-            return model;
-        }
-
-        model.addObject("institution", institution.get());
-        model.setViewName("/institution/read");
-        return model;
-    }
-
-    @GetMapping("/read-all")
-    public ModelAndView readAll(ModelAndView model) {
-        model.addObject("institutions", this.institutionRepository.findAll());
-        model.setViewName("/institution/read-all");
-        return model;
-    }
+//    @GetMapping("/read/{id}")
+//    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model) {
+//        Optional<Institution> institution = this.institutionRepository.findById(id);
+//
+//        if (institution.isEmpty()) {
+//            model.addObject("error", "Instituição não encontrada");
+//            model.setViewName("redirect:/");
+//            return model;
+//        }
+//
+//        model.addObject("institution", institution.get());
+//        model.setViewName("/institution/read");
+//        return model;
+//    }
+//
+//    @GetMapping("/read-all")
+//    public ModelAndView readAll(ModelAndView model) {
+//        model.addObject("institutions", this.institutionRepository.findAll());
+//        model.setViewName("/institution/read-all");
+//        return model;
+//    }
 
     @GetMapping("/update/{id}")
     public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView model) {
@@ -81,7 +81,7 @@ public class InstitutionController {
         }
 
         model.addObject("institution", institution.get());
-        model.setViewName("/institution/update");
+        model.setViewName("layouts/institution/update");
         return model;
     }
 
@@ -122,12 +122,12 @@ public class InstitutionController {
         return model;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        this.institutionRepository.deleteById(id);
-
-        model.setViewName("redirect:/");
-        return model;
-    }
+//    @DeleteMapping("/delete/{id}")
+//    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
+//        this.institutionRepository.deleteById(id);
+//
+//        model.setViewName("redirect:/");
+//        return model;
+//    }
 
 }
