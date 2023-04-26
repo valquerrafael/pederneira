@@ -6,13 +6,15 @@
           rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
           crossorigin="anonymous">
-    <title>Main</title>
+    <title>Basic Page</title>
 </head>
 <body>
 
-    <main th:fragment="main"
-          class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute">
-    </main>
+<div>
+    <header th:replace="~{fragments/header}"></header>
+    <main th:replace="~{fragments/form :: form('Cadastro', 'Cadastrar', 'input')}"></main>
+    <footer th:replace="~{fragments/footer}"></footer>
+</div>
 
 </body>
 </html>
