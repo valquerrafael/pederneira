@@ -17,7 +17,7 @@
         <form th:method="post" th:object="${enrollment}" class="w-25 bg-light text-dark border border-secondary rounded justify-content-center p-2">
             <h3 class="text-center">Cadastro</h3>
 
-            <div hidden ></div>
+            <input type="hidden" th:field="*{id}" />
 
             <div class="form-group">
                 <label for="student">Estudante:</label>
@@ -25,7 +25,7 @@
                     <option class="dropdown-item" value="">Selecione o estudante</option>
                     <option class="dropdown-item"
                             th:each="currentStudent : ${students}"
-                            th:value="${currentStudent}"
+                            th:value="${currentStudent.id}"
                             th:label="${currentStudent.toString()}">
                     </option>
                 </select>
@@ -37,7 +37,7 @@
                     <option class="dropdown-item" value="">Selecione o período</option>
                     <option class="dropdown-item"
                             th:each="currentSemester : ${semesters}"
-                            th:value="${currentSemester}"
+                            th:value="${currentSemester.id}"
                             th:label="${currentSemester.toString()}">
                     </option>
                 </select>
@@ -45,12 +45,12 @@
 
             <div class="form-group">
                 <label for="receptionDate">Data de recepção:</label>
-                <input type="date" class="form-control" id="receptionDate">
+                <input th:field="*{receptionDate}" th:format="yyyy-MM-dd" type="date" class="form-control" id="receptionDate">
             </div>
 
             <div class="form-group">
                 <label for="observation">Observação:</label>
-                <input type="text" class="form-control" id="observation">
+                <input th:field="*{observation}" type="text" class="form-control" id="observation">
             </div>
 
             <div class="d-flex align-items-center justify-content-between gap-5 mt-4">

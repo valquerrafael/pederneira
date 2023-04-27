@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="semester")
@@ -18,10 +18,10 @@ public class Semester {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date start;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date end;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate start;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate end;
     @ManyToOne
     @JoinColumn(name = "institution_id")
     private Institution institution;

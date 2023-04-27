@@ -14,23 +14,25 @@
     <header th:replace="~{fragments/header}"></header>
 
     <main class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute">
-        <form th:method="post" th:object="${institution}"
+        <form th:action="@{/institution/create}" th:method="post" th:object="${institution}"
               class="w-25 bg-light text-dark border border-secondary rounded justify-content-center p-2">
             <h3 class="text-center">Cadastro</h3>
 
+            <input type="hidden" th:field="*{id}" />
+
             <div class="form-group">
                 <label for="name">Nome:</label>
-                <input th:value="*{name}" type="text" class="form-control" id="name">
+                <input th:field="*{name}" type="text" class="form-control" id="name">
             </div>
 
             <div class="form-group">
                 <label for="acronym">Sigla:</label>
-                <input th:value="*{acronym}" type="text" class="form-control" id="acronym">
+                <input th:field="*{acronym}" type="text" class="form-control" id="acronym">
             </div>
 
             <div class="form-group">
                 <label for="phone">Telefone:</label>
-                <input th:value="*{phone}" type="text" class="form-control" id="phone">
+                <input th:field="*{phone}" type="text" class="form-control" id="phone">
             </div>
 
             <div class="d-flex align-items-center justify-content-between gap-5 mt-4">
