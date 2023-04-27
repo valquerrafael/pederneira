@@ -28,6 +28,7 @@ public class StudentController {
     @GetMapping("/create")
     public ModelAndView getCreatePage(Student student, ModelAndView model) {
         model.addObject("student", student);
+        model.addObject("institutions", this.institutionRepository.findAll());
         model.setViewName("layouts/student/create");
         return model;
     }
@@ -85,6 +86,7 @@ public class StudentController {
         }
 
         model.addObject("student", student.get());
+        model.addObject("institutions", this.institutionRepository.findAll());
         model.setViewName("layouts/student/update");
         return model;
     }

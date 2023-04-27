@@ -23,4 +23,10 @@ public class Student {
     private Institution currentInstitution;
     private String name;
     private String registration;
+
+    @Override
+    public String toString() {
+        return name + " - " + registration;
+    }
+
 }

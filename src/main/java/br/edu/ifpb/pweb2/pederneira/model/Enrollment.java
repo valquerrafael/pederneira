@@ -27,4 +27,10 @@ public class Enrollment {
     @JoinColumn(name = "student_id")
     private Student student;
     private String observation;
+
+    @Override
+    public String toString() {
+        return "Data de recepção: " + receptionDate + " - Semestre: " + semester + " - Observação: " + observation;
+    }
+
 }

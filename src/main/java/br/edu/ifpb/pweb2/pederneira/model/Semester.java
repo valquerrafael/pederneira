@@ -27,4 +27,10 @@ public class Semester {
     private Institution institution;
     private Integer year;
     private Integer semester;
+
+    @Override
+    public String toString() {
+        return year + "." + semester;
+    }
+
 }

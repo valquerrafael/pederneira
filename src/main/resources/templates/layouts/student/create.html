@@ -28,6 +28,18 @@
                 <input th:value="*{registration}" type="text" class="form-control" id="registration">
             </div>
 
+            <div class="form-group">
+                <label for="institution">Instituição atual:</label>
+                <select class="form-control dropdown-toggle" th:field="*{currentInstitution}" id="institution">
+                    <option class="dropdown-item" value="">Selecione a instituição</option>
+                    <option class="dropdown-item"
+                            th:each="institution : ${institutions}"
+                            th:value="${institution}"
+                            th:label="${institution.toString()}">
+                    </option>
+                </select>
+            </div>
+
             <div class="d-flex align-items-center justify-content-between gap-5 mt-4">
                 <button type="submit" class="btn btn-success w-50">Cadastrar</button>
                 <a th:href="@{/home}" type="submit" class="btn btn-secondary w-50">Cancelar</a>

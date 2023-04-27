@@ -81,6 +81,7 @@ public class InstitutionController {
         }
 
         model.addObject("institution", institution.get());
+        model.addObject("semesters", this.semesterRepository.findByInstitutionId(id));
         model.setViewName("layouts/institution/update");
         return model;
     }

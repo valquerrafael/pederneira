@@ -21,4 +21,10 @@ public class Institution {
     private String name;
     private String acronym;
     private String phone;
+
+    @Override
+    public String toString() {
+        return name + " (" + acronym + ")";
+    }
+
 }

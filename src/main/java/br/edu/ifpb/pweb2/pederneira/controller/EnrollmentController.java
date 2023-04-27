@@ -28,6 +28,8 @@ public class EnrollmentController {
     @GetMapping("/create")
     public ModelAndView getCreatePage(Enrollment enrollment, ModelAndView model) {
         model.addObject("enrollment", enrollment);
+        model.addObject("students", this.studentRepository.findAll());
+        model.addObject("semesters", this.semesterRepository.findAll());
         model.setViewName("layouts/enrollment/create");
         return model;
     }
