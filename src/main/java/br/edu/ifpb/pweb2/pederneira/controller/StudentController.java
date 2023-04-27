@@ -147,9 +147,9 @@ public class StudentController {
         return model;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        this.studentRepository.deleteById(id);
+    @DeleteMapping("/delete")
+    public ModelAndView delete(Student student, ModelAndView model) {
+        this.studentRepository.delete(student);
 
         model.setViewName("redirect:/home");
         return model;

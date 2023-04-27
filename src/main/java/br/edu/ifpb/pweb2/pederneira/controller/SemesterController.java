@@ -127,10 +127,10 @@ public class SemesterController {
         return model;
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete")
     @Transactional
-    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        this.semesterRepository.deleteById(id);
+    public ModelAndView delete(Semester semester, ModelAndView model) {
+        this.semesterRepository.delete(semester);
 
         model.setViewName("redirect:/home");
         return model;
