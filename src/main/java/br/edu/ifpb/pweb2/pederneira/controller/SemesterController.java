@@ -58,9 +58,7 @@ public class SemesterController {
             return model;
         }
 
-        Institution institution = institutionOptional.get();
-        institution.setCurrentSemester(semester);
-
+        semester.getInstitution().setCurrentSemester(semester);
         this.semesterRepository.save(semester);
 
         redirectAttributes.addFlashAttribute("success", "Semestre cadastrado com sucesso");

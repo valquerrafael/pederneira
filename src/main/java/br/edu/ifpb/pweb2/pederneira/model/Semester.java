@@ -26,11 +26,12 @@ public class Semester {
     @JoinColumn(name = "institution_id")
     private Institution institution;
     private Integer year;
-    private Integer semester;
+    @Column(name = "period")
+    private Integer period;
 
     @Override
     public String toString() {
-        return year + "." + semester;
+        return year + "." + period;
     }
 
 }
