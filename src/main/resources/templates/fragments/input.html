@@ -1,0 +1,5 @@
+<div th:fragment="input(label, type, id, value)"
+     class="form-group">
+    <label th:text="${label}" th:for="${id}"></label>
+    <input th:value="${value}" th:type="${type}" class="form-control" th:id="${id}">
+</div>

@@ -5,11 +5,11 @@ import br.edu.ifpb.pweb2.pederneira.model.Semester;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import jakarta.annotation.Resource;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -23,94 +23,100 @@ public class SemesterController {
     private InstitutionRepository institutionRepository;
 
     @GetMapping("/create")
-    public ModelAndView getCreatePage(Semester semester, ModelAndView model) {
-        model.addObject("semester", semester);
-        model.setViewName("/semester/create");
+    public ModelAndView getCreatePage(ModelAndView model) {
+        model.addObject("semester", new Semester());
+        model.addObject("institutions", this.institutionRepository.findAll());
+        model.setViewName("layouts/semester/create");
         return model;
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Semester semester, BindingResult bindingResult, ModelAndView model) {
+    public ModelAndView create(Semester semester, BindingResult bindingResult, ModelAndView model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            model.addObject("error", "Erro ao cadastrar semestre");
-            model.setViewName("redirect:/");
+            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar semestre");
+            model.setViewName("redirect:/home");
             return model;
         }
 
-        if (this.semesterRepository.findById(semester.getId()).isPresent()) {
-            model.addObject("error", "Semestre já cadastrado");
-            model.setViewName("redirect:/");
+        if (semester.getId() != null && this.semesterRepository.findById(semester.getId()).isPresent()) {
+            redirectAttributes.addFlashAttribute("error", "Semestre já cadastrado");
+            model.setViewName("redirect:/home");
+            return model;
+        }
+
+        if (semester.getInstitution() == null) {
+            redirectAttributes.addFlashAttribute("error", "É necessário uma instituição");
+            model.setViewName("redirect:/home");
             return model;
         }
 
         Optional<Institution> institutionOptional = this.institutionRepository.findById(semester.getInstitution().getId());
 
         if (institutionOptional.isEmpty()) {
-            model.addObject("error", "Instituição não encontrada");
-            model.setViewName("redirect:/");
+            redirectAttributes.addFlashAttribute("error", "Instituição não encontrada");
+            model.setViewName("redirect:/home");
             return model;
         }
 
-        Semester createdSemester = this.semesterRepository.save(semester);
-        Institution institution = institutionOptional.get();
+        semester.getInstitution().setCurrentSemester(semester);
+        this.semesterRepository.save(semester);
 
-        institution.setCurrentSemester(createdSemester);
-        this.institutionRepository.save(institution);
-
-        model.setViewName("redirect:/");
+        redirectAttributes.addFlashAttribute("success", "Semestre cadastrado com sucesso");
+        model.setViewName("redirect:/home");
         return model;
     }
 
     @GetMapping("/read/{id}")
-    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model) {
+    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model, RedirectAttributes redirectAttributes) {
         Optional<Semester> semester = this.semesterRepository.findById(id);
 
         if (semester.isEmpty()) {
-            model.addObject("error", "Semestre não encontrado");
-            model.setViewName("redirect:/");
+            redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
+            model.setViewName("redirect:/home");
             return model;
         }
 
         model.addObject("semester", semester.get());
-        model.setViewName("/semester/read");
+        model.addObject("institutions", this.institutionRepository.findAll());
+        model.setViewName("layouts/semester/read");
         return model;
     }
 
     @GetMapping("/read-all")
     public ModelAndView readAll(ModelAndView model) {
         model.addObject("semesters", this.semesterRepository.findAll());
-        model.setViewName("/semester/read-all");
+        model.setViewName("layouts/semester/read-all");
         return model;
     }
 
     @GetMapping("/update/{id}")
-    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView model) {
+    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView model, RedirectAttributes redirectAttributes) {
         Optional<Semester> semester = this.semesterRepository.findById(id);
 
         if (semester.isEmpty()) {
-            model.addObject("error", "Semestre não encontrado");
-            model.setViewName("redirect:/");
+            redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
+            model.setViewName("redirect:/home");
             return model;
         }
 
         model.addObject("semester", semester.get());
-        model.setViewName("/semester/update");
+        model.setViewName("layouts/semester/update");
         return model;
     }
 
     @PutMapping("/update")
-    public ModelAndView update(Semester semester, BindingResult bindingResult, ModelAndView model) {
+    public ModelAndView update(Semester semester, BindingResult bindingResult, ModelAndView model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            model.addObject("error", "Erro ao atualizar semestre");
-            model.setViewName("redirect:/");
+            redirectAttributes.addFlashAttribute("error", "Erro ao atualizar semestre");
+            model.setViewName("redirect:/home");
             return model;
         }
 
         Optional<Semester> semesterOptional = this.semesterRepository.findById(semester.getId());
 
         if (semesterOptional.isEmpty()) {
-            model.addObject("error", "Semestre não encontrado");
-            model.setViewName("redirect:/");
+            redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
+            model.setViewName("redirect:/home");
             return model;
         }
 
@@ -121,16 +127,24 @@ public class SemesterController {
 
         this.semesterRepository.save(semesterToUpdate);
 
-        model.setViewName("redirect:/");
+        model.setViewName("redirect:/home");
         return model;
     }
 
-    @DeleteMapping("/delete/{id}")
-    @Transactional
-    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView model) {
-        this.semesterRepository.deleteById(id);
+    @DeleteMapping("/delete")
+    public ModelAndView delete(Semester semester, ModelAndView model) {
+        Optional<Institution> institution = this.institutionRepository.findById(semester.getInstitution().getId());
+        if (institution.isPresent()
+            && institution.get().getCurrentSemester() != null
+            && institution.get().getCurrentSemester().getId().equals(semester.getId())) {
+            Institution institutionToUpdate = institution.get();
+            institutionToUpdate.setCurrentSemester(null);
+            this.institutionRepository.save(institutionToUpdate);
+        }
 
-        model.setViewName("redirect:/");
+        this.semesterRepository.delete(semester);
+
+        model.setViewName("redirect:/home");
         return model;
     }
 

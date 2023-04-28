@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>read all</title>
+</head>
+<body>
+
+<h1>semester read all</h1>
+<div th:each="semester : ${semesters}">
+  id: <span th:text="${semester.id}"></span> <br />
+  start: <span th:text="${semester.start}"></span> <br />
+  end: <span th:text="${semester.end}"></span> <br />
+  period: <span th:text="${semester.period}"></span> <br />
+  year: <span th:text="${semester.year}"></span> <br />
+  <br />
+</div>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Start Page</title>
@@ -7,6 +7,15 @@
 <body>
 
 <h1>Goodbye, world!</h1>
+<a href="/pederneira/institution/create">Institution Register</a>
+<a href="/pederneira/institution/update/1">Institution Update</a> <br />
+<a href="/pederneira/student/create">Student Register</a>
+<a href="/pederneira/student/update/1">Student Update</a> <br />
+<a href="/pederneira/semester/create">Semester Register</a>
+<a href="/pederneira/semester/update/1">Semester Update</a> <br />
+<a href="/pederneira/enrollment/create">Enrollment Register</a>
+
+<div th:text="${error}" style="color: red"></div>
 
 </body>
 </html>

@@ -1,0 +1,5 @@
+<div th:fragment="buttons(mainAction, cancelUri)"
+     class="d-flex align-items-center justify-content-between gap-5 mt-4">
+    <button type="submit" th:text="${mainAction}" class="btn btn-success w-50"></button>
+    <a th:href="@{${cancelUri}}" type="submit" class="btn btn-secondary w-50">Cancelar</a>
+</div>

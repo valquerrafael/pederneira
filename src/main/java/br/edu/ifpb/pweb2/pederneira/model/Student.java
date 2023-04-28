@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name="student")
 @AllArgsConstructor
@@ -15,12 +17,19 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "enrollment_id")
-    private Enrollment currentEnrollment;
     @OneToOne
+    private Enrollment currentEnrollment;
+    @OneToMany(mappedBy = "student", orphanRemoval = true)
+    private List<Enrollment> enrollments;
+    @ManyToOne
     @JoinColumn(name = "institution_id")
     private Institution currentInstitution;
     private String name;
     private String registration;
+
+    @Override
+    public String toString() {
+        return name + " - " + registration;
+    }
+
 }
