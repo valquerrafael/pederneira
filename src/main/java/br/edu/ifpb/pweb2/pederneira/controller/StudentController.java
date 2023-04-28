@@ -79,14 +79,15 @@ public class StudentController {
         }
 
         model.addObject("student", student.get());
-        model.setViewName("/student/read");
+        model.addObject("institutions", this.institutionRepository.findAll());
+        model.setViewName("layouts/student/read");
         return model;
     }
 
     @GetMapping("/read-all")
     public ModelAndView readAll(ModelAndView model) {
         model.addObject("students", this.studentRepository.findAll());
-        model.setViewName("/student/read-all");
+        model.setViewName("layouts/student/read-all");
         return model;
     }
 

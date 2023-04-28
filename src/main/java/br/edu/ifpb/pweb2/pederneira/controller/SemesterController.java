@@ -5,7 +5,6 @@ import br.edu.ifpb.pweb2.pederneira.model.Semester;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import jakarta.annotation.Resource;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +44,12 @@ public class SemesterController {
             return model;
         }
 
+        if (semester.getInstitution() == null) {
+            redirectAttributes.addFlashAttribute("error", "É necessário uma instituição");
+            model.setViewName("redirect:/home");
+            return model;
+        }
+
         Optional<Institution> institutionOptional = this.institutionRepository.findById(semester.getInstitution().getId());
 
         if (institutionOptional.isEmpty()) {
@@ -53,12 +58,12 @@ public class SemesterController {
             return model;
         }
 
-        Semester createdSemester = this.semesterRepository.save(semester);
         Institution institution = institutionOptional.get();
+        institution.setCurrentSemester(semester);
 
-        institution.setCurrentSemester(createdSemester);
-        this.institutionRepository.save(institution);
+        this.semesterRepository.save(semester);
 
+        redirectAttributes.addFlashAttribute("success", "Semestre cadastrado com sucesso");
         model.setViewName("redirect:/home");
         return model;
     }
@@ -74,14 +79,15 @@ public class SemesterController {
         }
 
         model.addObject("semester", semester.get());
-        model.setViewName("/semester/read");
+        model.addObject("institutions", this.institutionRepository.findAll());
+        model.setViewName("layouts/semester/read");
         return model;
     }
 
     @GetMapping("/read-all")
     public ModelAndView readAll(ModelAndView model) {
         model.addObject("semesters", this.semesterRepository.findAll());
-        model.setViewName("/semester/read-all");
+        model.setViewName("layouts/semester/read-all");
         return model;
     }
 
@@ -128,8 +134,16 @@ public class SemesterController {
     }
 
     @DeleteMapping("/delete")
-    @Transactional
     public ModelAndView delete(Semester semester, ModelAndView model) {
+        Optional<Institution> institution = this.institutionRepository.findById(semester.getInstitution().getId());
+        if (institution.isPresent()
+            && institution.get().getCurrentSemester() != null
+            && institution.get().getCurrentSemester().getId().equals(semester.getId())) {
+            Institution institutionToUpdate = institution.get();
+            institutionToUpdate.setCurrentSemester(null);
+            this.institutionRepository.save(institutionToUpdate);
+        }
+
         this.semesterRepository.delete(semester);
 
         model.setViewName("redirect:/home");

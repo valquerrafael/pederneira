@@ -22,7 +22,7 @@ public class Semester {
     private LocalDate start;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate end;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "institution_id")
     private Institution institution;
     private Integer year;

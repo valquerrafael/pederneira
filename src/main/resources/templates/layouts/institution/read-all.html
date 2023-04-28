@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>read all</title>
+</head>
+<body>
+
+<h1>institution read all</h1>
+<div th:each="institution : ${institutions}">
+  id: <span th:text="${institution.id}"></span> <br />
+  name: <span th:text="${institution.name}"></span> <br />
+  acronym: <span th:text="${institution.acronym}"></span> <br />
+  phone: <span th:text="${institution.phone}"></span> <br />
+  <br />
+</div>
+
+</body>
+</html>

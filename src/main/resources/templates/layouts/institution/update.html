@@ -40,7 +40,7 @@
                 <select class="form-control dropdown-toggle" th:field="*{currentSemester}" id="semester">
                     <option class="dropdown-item" value="">Selecione o período</option>
                     <option class="dropdown-item"
-                            th:each="semester : ${semesters}"
+                            th:each="semester : *{semesters}"
                             th:value="${semester.id}"
                             th:label="${semester.toString()}">
                     </option>

@@ -60,14 +60,14 @@ public class InstitutionController {
         }
 
         model.addObject("institution", institution.get());
-        model.setViewName("/institution/read");
+        model.setViewName("layouts/institution/read");
         return model;
     }
 
     @GetMapping("/read-all")
     public ModelAndView readAll(ModelAndView model) {
         model.addObject("institutions", this.institutionRepository.findAll());
-        model.setViewName("/institution/read-all");
+        model.setViewName("layouts/institution/read-all");
         return model;
     }
 
@@ -82,7 +82,6 @@ public class InstitutionController {
         }
 
         model.addObject("institution", institution.get());
-        model.addObject("semesters", this.semesterRepository.findByInstitutionId(id));
         model.setViewName("layouts/institution/update");
         return model;
     }
@@ -103,20 +102,23 @@ public class InstitutionController {
             return model;
         }
 
-        Optional<Semester> semester = this.semesterRepository.findById(institution.getCurrentSemester().getId());
-
-        if (semester.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Semestre atual não encontrado para instituição");
-            model.setViewName("redirect:/home");
-            return model;
-        }
-
         Institution institutionToUpdate = institutionOptional.get();
+
+        if (institution.getCurrentSemester() != null) {
+            Optional<Semester> semester = this.semesterRepository.findById(institution.getCurrentSemester().getId());
+
+            if (semester.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Semestre atual não encontrado para instituição");
+                model.setViewName("redirect:/home");
+                return model;
+            }
+
+            institutionToUpdate.setCurrentSemester(semester.get());
+        }
 
         institutionToUpdate.setName(institution.getName());
         institutionToUpdate.setAcronym(institution.getAcronym());
         institutionToUpdate.setPhone(institution.getPhone());
-        institutionToUpdate.setCurrentSemester(semester.get());
 
         this.institutionRepository.save(institutionToUpdate);
 

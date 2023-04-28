@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name="institution")
 @AllArgsConstructor
@@ -15,9 +17,12 @@ public class Institution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "current_semester_id")
+    @OneToOne
     private Semester currentSemester;
+    @OneToMany(mappedBy = "institution", orphanRemoval = true)
+    private List<Semester> semesters;
+    @OneToMany(mappedBy = "currentInstitution", orphanRemoval = true)
+    private List<Student> students;
     private String name;
     private String acronym;
     private String phone;

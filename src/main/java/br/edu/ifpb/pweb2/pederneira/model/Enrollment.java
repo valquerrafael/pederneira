@@ -23,7 +23,7 @@ public class Enrollment {
     @ManyToOne
     @JoinColumn(name = "semester_id")
     private Semester semester;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "student_id")
     private Student student;
     private String observation;
