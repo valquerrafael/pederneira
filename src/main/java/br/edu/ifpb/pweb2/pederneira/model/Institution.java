@@ -23,8 +23,11 @@ public class Institution {
     private List<Semester> semesters;
     @OneToMany(mappedBy = "currentInstitution", cascade = {CascadeType.MERGE})
     private List<Student> students;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "acronym", nullable = false)
     private String acronym;
+    @Column(name = "phone", nullable = false)
     private String phone;
 
     @Override

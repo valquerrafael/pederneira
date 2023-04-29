@@ -28,42 +28,42 @@ public class EnrollmentController {
     private SemesterRepository semesterRepository;
 
     @GetMapping("/create")
-    public ModelAndView getCreatePage(ModelAndView model) {
-        model.addObject("enrollment", new Enrollment());
-        model.addObject("students", this.studentRepository.findAll());
-        model.addObject("semesters", this.semesterRepository.findAll());
-        model.setViewName("layouts/enrollment/create");
-        return model;
+    public ModelAndView getCreatePage(ModelAndView mav) {
+        mav.addObject("enrollment", new Enrollment());
+        mav.addObject("students", this.studentRepository.findAll());
+        mav.addObject("semesters", this.semesterRepository.findAll());
+        mav.setViewName("layouts/enrollment/create");
+        return mav;
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Enrollment enrollment, BindingResult bindingResult, ModelAndView model, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(Enrollment enrollment, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar declaração");
-            model.setViewName("redirect:/student");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         if (enrollment.getId() != null && this.enrollmentRepository.findById(enrollment.getId()).isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Declaração já cadastrada");
-            model.setViewName("redirect:/student");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         Optional<Semester> semesterOptional = this.semesterRepository.findById(enrollment.getSemester().getId());
 
         if (semesterOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
-            model.setViewName("redirect:/student");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         Optional<Student> studentOptional = this.studentRepository.findById(enrollment.getStudent().getId());
 
         if (studentOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Estudante não encontrado");
-            model.setViewName("redirect:/student");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         Student student = studentOptional.get();
@@ -76,8 +76,8 @@ public class EnrollmentController {
         student.setCurrentEnrollment(savedEnrollment);
         this.studentRepository.save(student);
 
-        model.setViewName("redirect:/student");
-        return model;
+        mav.setViewName("redirect:/student");
+        return mav;
     }
 
 }

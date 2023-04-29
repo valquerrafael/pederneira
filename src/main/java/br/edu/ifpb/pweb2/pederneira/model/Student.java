@@ -24,6 +24,7 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "institution_id")
     private Institution currentInstitution;
+    @Column(name = "name", nullable = false)
     private String name;
     private String registration;
 
