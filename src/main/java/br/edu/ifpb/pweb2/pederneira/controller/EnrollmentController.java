@@ -28,7 +28,7 @@ public class EnrollmentController {
     private SemesterRepository semesterRepository;
 
     @GetMapping("/create")
-    public ModelAndView getCreatePage(ModelAndView mav) {
+    public ModelAndView getCreatePage(Enrollment enrollment, ModelAndView mav) {
         mav.addObject("enrollment", new Enrollment());
         mav.addObject("students", this.studentRepository.findAll());
         mav.addObject("semesters", this.semesterRepository.findAll());
@@ -38,6 +38,15 @@ public class EnrollmentController {
 
     @PostMapping("/create")
     public ModelAndView create(Enrollment enrollment, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+        if (enrollment.getStudent() != null && enrollment.getSemester() == null) {
+            mav.addObject("enrollment", enrollment);
+            mav.addObject("selectedStudent", enrollment.getStudent());
+            mav.addObject("students", this.studentRepository.findAll());
+            mav.addObject("semesters", this.semesterRepository.findByInstitutionId(enrollment.getStudent().getCurrentInstitution().getId()));
+            mav.setViewName("layouts/enrollment/create");
+            return mav;
+        }
+
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar declaração");
             mav.setViewName("redirect:/student");

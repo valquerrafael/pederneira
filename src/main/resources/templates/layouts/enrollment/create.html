@@ -14,24 +14,26 @@
     <header th:replace="~{fragments/header}"></header>
 
     <main class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute">
-        <form th:method="post" th:object="${enrollment}" class="w-25 bg-light text-dark border border-secondary rounded justify-content-center p-2">
-            <h3 class="text-center">Cadastro</h3>
+        <form th:method="post" th:object="${enrollment}"
+              class="w-25 bg-light text-dark border border-secondary rounded justify-content-center p-2">
+            <h3 class="text-center">Cadastro de Declaração</h3>
 
             <input type="hidden" th:field="*{id}" />
 
-            <div class="form-group">
+            <div class="form-group" th:classappend="${selectedStudent != null} ? 'd-none' : ''">
                 <label for="student">Estudante:</label>
                 <select class="form-control dropdown-toggle" th:field="*{student}" id="student">
                     <option class="dropdown-item" value="">Selecione o estudante</option>
                     <option class="dropdown-item"
                             th:each="currentStudent : ${students}"
                             th:value="${currentStudent.id}"
-                            th:label="${currentStudent.toString()}">
+                            th:label="${currentStudent.toString()}"
+                            th:selected="${selectedStudent != null and selectedStudent.id == currentStudent.id}">
                     </option>
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" th:if="${selectedStudent != null}">
                 <label for="semester">Período:</label>
                 <select class="form-control dropdown-toggle" th:field="*{semester}" id="semester">
                     <option class="dropdown-item" value="">Selecione o período</option>
@@ -43,14 +45,16 @@
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" th:if="${selectedStudent != null}">
                 <label for="observation">Observação:</label>
                 <input th:field="*{observation}" type="text" class="form-control" id="observation">
             </div>
 
             <div class="d-flex align-items-center justify-content-between gap-5 mt-4">
-                <button type="submit" class="btn btn-success w-50">Cadastrar</button>
-                <a th:href="@{/student}" type="submit" class="btn btn-secondary w-50">Cancelar</a>
+                <button th:text="${selectedStudent} == null ? 'Confirmar' : 'Cadastrar'"
+                        type="submit" class="btn btn-success w-50">
+                </button>
+                <a th:href="@{/student}" class="btn btn-secondary w-50">Cancelar</a>
             </div>
         </form>
     </main>
