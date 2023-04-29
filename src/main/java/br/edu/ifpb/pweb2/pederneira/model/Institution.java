@@ -21,7 +21,7 @@ public class Institution {
     private Semester currentSemester;
     @OneToMany(mappedBy = "institution", orphanRemoval = true)
     private List<Semester> semesters;
-    @OneToMany(mappedBy = "currentInstitution", orphanRemoval = true)
+    @OneToMany(mappedBy = "currentInstitution", cascade = {CascadeType.MERGE})
     private List<Student> students;
     private String name;
     private String acronym;

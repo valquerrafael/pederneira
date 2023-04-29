@@ -19,7 +19,7 @@ public class Enrollment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate receptionDate;
+    private LocalDate receiptDate;
     @ManyToOne
     @JoinColumn(name = "semester_id")
     private Semester semester;
@@ -30,7 +30,7 @@ public class Enrollment {
 
     @Override
     public String toString() {
-        return "Data de recepção: " + receptionDate + " - Semestre: " + semester + " - Observação: " + observation;
+        return "Data de recebimento: " + receiptDate + " - Semestre: " + semester + " - Observação: " + observation;
     }
 
 }

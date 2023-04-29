@@ -2,8 +2,10 @@ package br.edu.ifpb.pweb2.pederneira.controller;
 
 import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Semester;
+import br.edu.ifpb.pweb2.pederneira.model.Student;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
+import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -21,6 +23,8 @@ public class InstitutionController {
     private InstitutionRepository institutionRepository;
     @Resource
     private SemesterRepository semesterRepository;
+    @Resource
+    private StudentRepository studentRepository;
 
     @GetMapping
     public ModelAndView getHome(ModelAndView mav) {
@@ -113,6 +117,21 @@ public class InstitutionController {
     
     @GetMapping("/delete/{id}")
     private ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView mav) {
+        Optional<Institution> institutionOptional = this.institutionRepository.findById(id);
+
+        if (institutionOptional.isEmpty()) {
+            mav.setViewName("redirect:/institution");
+            return mav;
+        }
+
+        Institution institution = institutionOptional.get();
+
+        for (Student student : institution.getStudents()) {
+            student.setCurrentInstitution(null);
+        }
+
+        this.studentRepository.saveAll(institution.getStudents());
+
         this.institutionRepository.deleteById(id);
 
         mav.setViewName("redirect:/institution");

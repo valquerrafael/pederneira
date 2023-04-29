@@ -40,13 +40,13 @@ public class EnrollmentController {
     public ModelAndView create(Enrollment enrollment, BindingResult bindingResult, ModelAndView model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar declaração");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/student");
             return model;
         }
 
         if (enrollment.getId() != null && this.enrollmentRepository.findById(enrollment.getId()).isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Declaração já cadastrada");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/student");
             return model;
         }
 
@@ -54,7 +54,7 @@ public class EnrollmentController {
 
         if (semesterOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/student");
             return model;
         }
 
@@ -62,7 +62,7 @@ public class EnrollmentController {
 
         if (studentOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Estudante não encontrado");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/student");
             return model;
         }
 
@@ -70,13 +70,13 @@ public class EnrollmentController {
 
         enrollment.setStudent(student);
         enrollment.setSemester(semesterOptional.get());
-        enrollment.setReceptionDate(LocalDate.now());
+        enrollment.setReceiptDate(LocalDate.now());
         Enrollment savedEnrollment = this.enrollmentRepository.save(enrollment);
 
         student.setCurrentEnrollment(savedEnrollment);
         this.studentRepository.save(student);
 
-        model.setViewName("redirect:/home");
+        model.setViewName("redirect:/student");
         return model;
     }
 
