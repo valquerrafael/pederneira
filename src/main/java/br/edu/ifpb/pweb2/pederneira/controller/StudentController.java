@@ -1,9 +1,7 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
-import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
 import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Student;
-import br.edu.ifpb.pweb2.pederneira.repository.EnrollmentRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
@@ -23,118 +21,100 @@ public class StudentController {
     private StudentRepository studentRepository;
     @Resource
     private InstitutionRepository institutionRepository;
-    @Resource
-    private EnrollmentRepository enrollmentRepository;
+
+    @GetMapping
+    public ModelAndView getHome(ModelAndView mav) {
+        mav.addObject("students", this.studentRepository.findAll());
+        mav.setViewName("layouts/student/home");
+        return mav;
+    }
 
     @GetMapping("/create")
-    public ModelAndView getCreatePage(ModelAndView model) {
-        model.addObject("student", new Student());
-        model.addObject("institutions", this.institutionRepository.findAll());
-        model.setViewName("layouts/student/create");
-        return model;
+    public ModelAndView getCreatePage(ModelAndView mav) {
+        mav.addObject("student", new Student());
+        mav.addObject("institutions", this.institutionRepository.findAll());
+        mav.setViewName("layouts/student/create");
+        return mav;
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Student student, BindingResult bindingResult, ModelAndView model, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar estudante");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         if (student.getId() != null && this.studentRepository.findById(student.getId()).isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Estudante já cadastrado");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         if (student.getCurrentInstitution() == null) {
             redirectAttributes.addFlashAttribute("error", "Instituição não informada");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         Optional<Institution> institution = this.institutionRepository.findById(student.getCurrentInstitution().getId());
 
         if (institution.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Instituição não encontrada");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         this.studentRepository.save(student);
 
-        model.setViewName("redirect:/home");
-        return model;
-    }
-
-    @GetMapping("/read/{id}")
-    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model, RedirectAttributes redirectAttributes) {
-        Optional<Student> student = this.studentRepository.findById(id);
-
-        if (student.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Estudante não encontrado");
-            model.setViewName("redirect:/home");
-            return model;
-        }
-
-        model.addObject("student", student.get());
-        model.addObject("institutions", this.institutionRepository.findAll());
-        model.setViewName("layouts/student/read");
-        return model;
-    }
-
-    @GetMapping("/read-all")
-    public ModelAndView readAll(ModelAndView model) {
-        model.addObject("students", this.studentRepository.findAll());
-        model.setViewName("layouts/student/read-all");
-        return model;
+        mav.setViewName("redirect:/student");
+        return mav;
     }
 
     @GetMapping("/update/{id}")
-    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView model, RedirectAttributes redirectAttributes) {
+    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView mav, RedirectAttributes redirectAttributes) {
         Optional<Student> student = this.studentRepository.findById(id);
 
         if (student.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Estudante não encontrado");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
-        model.addObject("student", student.get());
-        model.addObject("institutions", this.institutionRepository.findAll());
-        model.setViewName("layouts/student/update");
-        return model;
+        mav.addObject("student", student.get());
+        mav.addObject("institutions", this.institutionRepository.findAll());
+        mav.setViewName("layouts/student/update");
+        return mav;
     }
 
     @PutMapping("/update")
-    public ModelAndView update(Student student, BindingResult bindingResult, ModelAndView model, RedirectAttributes redirectAttributes) {
+    public ModelAndView update(Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao atualizar estudante");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         Optional<Student> studentOptional = this.studentRepository.findById(student.getId());
 
         if (studentOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Estudante não encontrado");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         if (student.getCurrentInstitution() == null) {
             redirectAttributes.addFlashAttribute("error", "Instituição não informada");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         Optional<Institution> institution = this.institutionRepository.findById(student.getCurrentInstitution().getId());
 
         if (institution.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Instituição não encontrada");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/student");
+            return mav;
         }
 
         Student studentToUpdate = studentOptional.get();
@@ -144,16 +124,16 @@ public class StudentController {
         studentToUpdate.setCurrentInstitution(institution.get());
 
         this.studentRepository.save(studentToUpdate);
-        model.setViewName("redirect:/home");
-        return model;
+        mav.setViewName("redirect:/student");
+        return mav;
     }
 
-    @DeleteMapping("/delete")
-    public ModelAndView delete(Student student, ModelAndView model) {
-        this.studentRepository.delete(student);
+    @GetMapping("/delete/{id}")
+    private ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView mav) {
+        this.studentRepository.deleteById(id);
 
-        model.setViewName("redirect:/home");
-        return model;
+        mav.setViewName("redirect:/student");
+        return mav;
     }
 
 }

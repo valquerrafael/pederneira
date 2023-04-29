@@ -21,10 +21,13 @@ public class Institution {
     private Semester currentSemester;
     @OneToMany(mappedBy = "institution", orphanRemoval = true)
     private List<Semester> semesters;
-    @OneToMany(mappedBy = "currentInstitution", orphanRemoval = true)
+    @OneToMany(mappedBy = "currentInstitution", cascade = {CascadeType.MERGE})
     private List<Student> students;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "acronym", nullable = false)
     private String acronym;
+    @Column(name = "phone", nullable = false)
     private String phone;
 
     @Override

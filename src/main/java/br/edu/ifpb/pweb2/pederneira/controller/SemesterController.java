@@ -22,102 +22,86 @@ public class SemesterController {
     @Resource
     private InstitutionRepository institutionRepository;
 
+    @GetMapping
+    public ModelAndView getHome(ModelAndView mav) {
+        mav.addObject("semesters", this.semesterRepository.findAll());
+        mav.setViewName("layouts/semester/home");
+        return mav;
+    }
+
     @GetMapping("/create")
-    public ModelAndView getCreatePage(ModelAndView model) {
-        model.addObject("semester", new Semester());
-        model.addObject("institutions", this.institutionRepository.findAll());
-        model.setViewName("layouts/semester/create");
-        return model;
+    public ModelAndView getCreatePage(ModelAndView mav) {
+        mav.addObject("semester", new Semester());
+        mav.addObject("institutions", this.institutionRepository.findAll());
+        mav.setViewName("layouts/semester/create");
+        return mav;
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Semester semester, BindingResult bindingResult, ModelAndView model, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar semestre");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/semester");
+            return mav;
         }
 
         if (semester.getId() != null && this.semesterRepository.findById(semester.getId()).isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Semestre já cadastrado");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/semester");
+            return mav;
         }
 
         if (semester.getInstitution() == null) {
             redirectAttributes.addFlashAttribute("error", "É necessário uma instituição");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/semester");
+            return mav;
         }
 
         Optional<Institution> institutionOptional = this.institutionRepository.findById(semester.getInstitution().getId());
 
         if (institutionOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Instituição não encontrada");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/semester");
+            return mav;
         }
 
         semester.getInstitution().setCurrentSemester(semester);
         this.semesterRepository.save(semester);
 
         redirectAttributes.addFlashAttribute("success", "Semestre cadastrado com sucesso");
-        model.setViewName("redirect:/home");
-        return model;
-    }
-
-    @GetMapping("/read/{id}")
-    public ModelAndView readOne(@PathVariable(name = "id") Integer id, ModelAndView model, RedirectAttributes redirectAttributes) {
-        Optional<Semester> semester = this.semesterRepository.findById(id);
-
-        if (semester.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
-            model.setViewName("redirect:/home");
-            return model;
-        }
-
-        model.addObject("semester", semester.get());
-        model.addObject("institutions", this.institutionRepository.findAll());
-        model.setViewName("layouts/semester/read");
-        return model;
-    }
-
-    @GetMapping("/read-all")
-    public ModelAndView readAll(ModelAndView model) {
-        model.addObject("semesters", this.semesterRepository.findAll());
-        model.setViewName("layouts/semester/read-all");
-        return model;
+        mav.setViewName("redirect:/semester");
+        return mav;
     }
 
     @GetMapping("/update/{id}")
-    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView model, RedirectAttributes redirectAttributes) {
+    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView mav, RedirectAttributes redirectAttributes) {
         Optional<Semester> semester = this.semesterRepository.findById(id);
 
         if (semester.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/semester");
+            return mav;
         }
 
-        model.addObject("semester", semester.get());
-        model.setViewName("layouts/semester/update");
-        return model;
+        mav.addObject("semester", semester.get());
+        mav.setViewName("layouts/semester/update");
+        return mav;
     }
 
     @PutMapping("/update")
-    public ModelAndView update(Semester semester, BindingResult bindingResult, ModelAndView model, RedirectAttributes redirectAttributes) {
+    public ModelAndView update(Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao atualizar semestre");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/semester");
+            return mav;
         }
 
         Optional<Semester> semesterOptional = this.semesterRepository.findById(semester.getId());
 
         if (semesterOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
-            model.setViewName("redirect:/home");
-            return model;
+            mav.setViewName("redirect:/semester");
+            return mav;
         }
 
         Semester semesterToUpdate = semesterOptional.get();
@@ -127,25 +111,34 @@ public class SemesterController {
 
         this.semesterRepository.save(semesterToUpdate);
 
-        model.setViewName("redirect:/home");
-        return model;
+        mav.setViewName("redirect:/semester");
+        return mav;
     }
 
-    @DeleteMapping("/delete")
-    public ModelAndView delete(Semester semester, ModelAndView model) {
+    @GetMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable(name = "id") Integer id, ModelAndView mav) {
+        Optional<Semester> semesterOptional = this.semesterRepository.findById(id);
+
+        if (semesterOptional.isEmpty()) {
+            mav.setViewName("redirect:/semester");
+            return mav;
+        }
+
+        Semester semester = semesterOptional.get();
+
         Optional<Institution> institution = this.institutionRepository.findById(semester.getInstitution().getId());
         if (institution.isPresent()
             && institution.get().getCurrentSemester() != null
-            && institution.get().getCurrentSemester().getId().equals(semester.getId())) {
+            && institution.get().getCurrentSemester().getId().equals(id)) {
             Institution institutionToUpdate = institution.get();
             institutionToUpdate.setCurrentSemester(null);
-            this.institutionRepository.save(institutionToUpdate);
+            this.institutionRepository.saveAndFlush(institutionToUpdate);
         }
 
-        this.semesterRepository.delete(semester);
+        this.semesterRepository.deleteById(id);
 
-        model.setViewName("redirect:/home");
-        return model;
+        mav.setViewName("redirect:/semester");
+        return mav;
     }
 
 }
