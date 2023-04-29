@@ -34,19 +34,19 @@ public class SemesterController {
     public ModelAndView create(Semester semester, BindingResult bindingResult, ModelAndView model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar semestre");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/institution");
             return model;
         }
 
         if (semester.getId() != null && this.semesterRepository.findById(semester.getId()).isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Semestre já cadastrado");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/institution");
             return model;
         }
 
         if (semester.getInstitution() == null) {
             redirectAttributes.addFlashAttribute("error", "É necessário uma instituição");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/institution");
             return model;
         }
 
@@ -54,7 +54,7 @@ public class SemesterController {
 
         if (institutionOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Instituição não encontrada");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/institution");
             return model;
         }
 
@@ -62,7 +62,7 @@ public class SemesterController {
         this.semesterRepository.save(semester);
 
         redirectAttributes.addFlashAttribute("success", "Semestre cadastrado com sucesso");
-        model.setViewName("redirect:/home");
+        model.setViewName("redirect:/institution");
         return model;
     }
 
@@ -72,7 +72,7 @@ public class SemesterController {
 
         if (semester.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/institution");
             return model;
         }
 
@@ -95,7 +95,7 @@ public class SemesterController {
 
         if (semester.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/institution");
             return model;
         }
 
@@ -108,7 +108,7 @@ public class SemesterController {
     public ModelAndView update(Semester semester, BindingResult bindingResult, ModelAndView model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao atualizar semestre");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/institution");
             return model;
         }
 
@@ -116,7 +116,7 @@ public class SemesterController {
 
         if (semesterOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Semestre não encontrado");
-            model.setViewName("redirect:/home");
+            model.setViewName("redirect:/institution");
             return model;
         }
 
@@ -127,7 +127,7 @@ public class SemesterController {
 
         this.semesterRepository.save(semesterToUpdate);
 
-        model.setViewName("redirect:/home");
+        model.setViewName("redirect:/institution");
         return model;
     }
 
@@ -144,7 +144,7 @@ public class SemesterController {
 
         this.semesterRepository.delete(semester);
 
-        model.setViewName("redirect:/home");
+        model.setViewName("redirect:/institution");
         return model;
     }
 
