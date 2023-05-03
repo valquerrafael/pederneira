@@ -138,7 +138,16 @@ public class InstitutionController {
         }
 
         for (Semester semester : institution.getSemesters()) {
-            this.enrollmentRepository.deleteAll(this.enrollmentRepository.findBySemesterId(semester.getId()));
+            List<Enrollment> enrollments = this.enrollmentRepository.findBySemesterId(semester.getId());
+
+            for (Enrollment enrollment : enrollments) {
+                if (enrollment.equals(enrollment.getStudent().getCurrentEnrollment())) {
+                    enrollment.getStudent().setCurrentEnrollment(null);
+                    this.studentRepository.saveAndFlush(enrollment.getStudent());
+                }
+            }
+
+            this.enrollmentRepository.deleteAll(enrollments);
         }
 
         this.studentRepository.saveAll(institution.getStudents());
