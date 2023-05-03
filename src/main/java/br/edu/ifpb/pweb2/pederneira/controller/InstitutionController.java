@@ -1,8 +1,10 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
+import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
 import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Semester;
 import br.edu.ifpb.pweb2.pederneira.model.Student;
+import br.edu.ifpb.pweb2.pederneira.repository.EnrollmentRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -25,6 +29,8 @@ public class InstitutionController {
     private SemesterRepository semesterRepository;
     @Resource
     private StudentRepository studentRepository;
+    @Resource
+    private EnrollmentRepository enrollmentRepository;
 
     @GetMapping
     public ModelAndView getHome(ModelAndView mav) {
@@ -128,6 +134,11 @@ public class InstitutionController {
 
         for (Student student : institution.getStudents()) {
             student.setCurrentInstitution(null);
+            student.setCurrentEnrollment(null);
+        }
+
+        for (Semester semester : institution.getSemesters()) {
+            this.enrollmentRepository.deleteAll(this.enrollmentRepository.findBySemesterId(semester.getId()));
         }
 
         this.studentRepository.saveAll(institution.getStudents());

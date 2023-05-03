@@ -23,7 +23,7 @@ public class Enrollment {
     @Column(name = "receipt_date", nullable = false)
     private LocalDate receiptDate;
     @ManyToOne
-    @JoinColumn(name = "semester_id", nullable = false)
+    @JoinColumn(name = "semester_id")
     private Semester semester;
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "student_id", nullable = false)
