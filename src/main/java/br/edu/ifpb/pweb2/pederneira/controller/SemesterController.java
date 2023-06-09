@@ -8,6 +8,9 @@ import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +34,13 @@ public class SemesterController {
     private StudentRepository studentRepository;
 
     @GetMapping
-    public ModelAndView getHome(ModelAndView mav) {
-        mav.addObject("semesters", this.semesterRepository.findAll());
+    public ModelAndView getHome(
+        ModelAndView mav,
+        @RequestParam(defaultValue = "1") int page
+    ) {
+        int size = 3;
+        Pageable paging = PageRequest.of(page - 1, size);
+        mav.addObject("semesters", this.semesterRepository.findAll(paging));
         mav.setViewName("layouts/semester/home");
         return mav;
     }
