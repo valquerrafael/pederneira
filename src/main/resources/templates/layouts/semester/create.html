@@ -23,11 +23,13 @@
             <div class="form-group">
                 <label for="start">Início:</label>
                 <input th:field="*{start}" th:format="yyyy-MM-dd" type="date" class="form-control" id="start">
+                <p th:if="${#fields.hasErrors('start')}" th:errorclass="error" th:errors="*{start}" class="alert alert-danger" />
             </div>
 
             <div class="form-group">
                 <label for="end">Fim:</label>
                 <input th:field="*{end}" th:format="yyyy-MM-dd" type="date" class="form-control" id="end">
+                <p th:if="${#fields.hasErrors('end')}" th:errorclass="error" th:errors="*{end}" class="alert alert-danger" />
             </div>
 
             <div class="form-group">

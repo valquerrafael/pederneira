@@ -9,6 +9,7 @@ import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -47,10 +48,10 @@ public class InstitutionController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Institution institution, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Institution institution, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar instituição");
-            mav.setViewName("redirect:/institution");
+//            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar instituição");
+            mav.setViewName("redirect:/institution/create");
             return mav;
         }
 
@@ -82,7 +83,7 @@ public class InstitutionController {
     }
 
     @PutMapping("/update")
-    public ModelAndView update(Institution institution, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView update(@Valid Institution institution, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao atualizar instituição");
             mav.setViewName("redirect:/institution");

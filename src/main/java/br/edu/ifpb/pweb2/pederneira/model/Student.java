@@ -1,6 +1,8 @@
 package br.edu.ifpb.pweb2.pederneira.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,8 +26,12 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "institution_id")
     private Institution currentInstitution;
+
+    @NotBlank(message = "Campo obrigatório!")
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Size(max=8, message = "Matrícula deve ter no máximo 8 caracteres")
     private String registration;
 
     @Override
