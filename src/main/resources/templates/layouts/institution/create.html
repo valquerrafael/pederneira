@@ -22,8 +22,8 @@
 
             <div class="form-group">
                 <label for="name">Nome:</label>
-                <input th:field="*{name}" type="text" class="form-control" id="name">
-                <p th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}" class="alert alert-danger" />
+                <input th:field="*{name}" type="text" class="form-control" id="name" th:errorclass="is-invalid">
+                <p th:if="${#fields.hasErrors('name')}"  th:errors="*{name}" class="alert alert-danger" />
             </div>
 
             <div class="form-group">
@@ -35,6 +35,7 @@
             <div class="form-group">
                 <label for="phone">Telefone:</label>
                 <input th:field="*{phone}" type="text" class="form-control" id="phone">
+                <p th:if="${#fields.hasErrors('phone')}" th:errorclass="error" th:errors="*{phone}" class="alert alert-danger" />
             </div>
 
             <div class="d-flex align-items-center justify-content-between gap-5 mt-4">

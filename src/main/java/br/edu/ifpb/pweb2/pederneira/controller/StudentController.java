@@ -41,8 +41,7 @@ public class StudentController {
     @PostMapping("/create")
     public ModelAndView create(@Valid Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar estudante");
-            mav.setViewName("redirect:/student");
+            mav.setViewName("layouts/student/create");
             return mav;
         }
 
@@ -91,8 +90,7 @@ public class StudentController {
     @PutMapping("/update")
     public ModelAndView update(@Valid Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao atualizar estudante");
-            mav.setViewName("redirect:/student");
+            mav.setViewName("layouts/student/update");
             return mav;
         }
 

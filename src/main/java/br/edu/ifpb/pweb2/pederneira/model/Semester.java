@@ -1,8 +1,7 @@
 package br.edu.ifpb.pweb2.pederneira.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,26 +21,29 @@ public class Semester {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @NotBlank(message = "Campo obrigatório!")
+    @NotNull(message = "Campo obrigatório!")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Future(message = "Data deve ser futura")
+    @Future(message = "Data deve ser futura!")
     @Column(name = "start", nullable = false)
     private LocalDate start;
 
-//    @NotBlank(message = "Campo obrigatório!")
+    @NotNull(message = "Campo obrigatório!")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    @Future(message = "Data deve ser futura")
+    @Future(message = "Data deve ser futura")
     @Column(name = "end", nullable = false)
     private LocalDate end;
 
-//    @NotBlank(message = "Campo obrigatório!")
+    @NotNull(message = "Campo obrigatório!")
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "institution_id", nullable = false)
     private Institution institution;
-//    @NotBlank(message = "Campo obrigatório!")
+
+    @NotNull(message = "Campo obrigatório!")
+    @Min(value = 2023, message = "O número deve ser maior ou igual a 2023.")
     @Column(name = "year", nullable = false)
     private Integer year;
 
+    @Positive(message = "Número deve ser acima de zero.")
     private Integer schoolSemester;
 
     public String getStartFormatted() {

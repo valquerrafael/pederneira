@@ -48,21 +48,18 @@ public class InstitutionController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(@Valid Institution institution, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Institution institution, BindingResult bindingResult,
+                               ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar instituição");
-            mav.setViewName("redirect:/institution/create");
+            mav.setViewName("layouts/institution/create");
             return mav;
         }
-
         if (institution.getId() != null && this.institutionRepository.findById(institution.getId()).isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Instituição já cadastrada");
             mav.setViewName("redirect:/institution");
             return mav;
         }
-
         this.institutionRepository.save(institution);
-
         mav.setViewName("redirect:/institution");
         return mav;
     }
@@ -85,8 +82,8 @@ public class InstitutionController {
     @PutMapping("/update")
     public ModelAndView update(@Valid Institution institution, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao atualizar instituição");
-            mav.setViewName("redirect:/institution");
+//            redirectAttributes.addFlashAttribute("error", "Erro ao atualizar instituição");
+            mav.setViewName("layouts/institution/update");
             return mav;
         }
 

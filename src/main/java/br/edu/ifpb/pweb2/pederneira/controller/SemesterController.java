@@ -39,10 +39,10 @@ public class SemesterController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(@Valid Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Semester semester, BindingResult bindingResult,
+                               ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar semestre");
-            mav.setViewName("redirect:/semester/create");
+            mav.setViewName("layouts/semester/create");
             return mav;
         }
 

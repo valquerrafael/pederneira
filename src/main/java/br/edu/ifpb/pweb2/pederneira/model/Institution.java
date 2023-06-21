@@ -34,9 +34,11 @@ public class Institution {
     private String name;
 
     @NotBlank(message = "Campo obrigatório!")
+    @Pattern(regexp = "^[A-Z]*$", message = "A sigla só deve ter letras maiúsculas")
     @Column(name = "acronym", nullable = false)
     private String acronym;
 
+    @NotBlank(message = "Campo obrigatório!")
     @Pattern(regexp = "\\(\\d{2}\\)\\s?\\d{4,5}-\\d{4}",
             message = "O telefone deve estar no formato (99) 9999-9999 ou (99) 99999-9999")
     @Column(name = "phone", nullable = false)
