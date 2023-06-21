@@ -50,6 +50,11 @@
                 <input th:field="*{observation}" type="text" class="form-control" id="observation">
             </div>
 
+            <div class="form-group" th:if="${selectedStudent != null}">
+                <label for="file">Declaração em PDF:</label>
+                <input class="form-control" type="file" name="file" accept="application/pdf" id="file" />
+            </div>
+
             <div class="d-flex align-items-center justify-content-between gap-5 mt-4">
                 <button th:text="${selectedStudent} == null ? 'Confirmar' : 'Cadastrar'"
                         type="submit" class="btn btn-success w-50">

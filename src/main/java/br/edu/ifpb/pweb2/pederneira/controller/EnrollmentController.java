@@ -1,17 +1,22 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
+import br.edu.ifpb.pweb2.pederneira.model.Document;
 import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
 import br.edu.ifpb.pweb2.pederneira.model.Semester;
 import br.edu.ifpb.pweb2.pederneira.model.Student;
 import br.edu.ifpb.pweb2.pederneira.repository.EnrollmentRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
+import br.edu.ifpb.pweb2.pederneira.service.DocumentService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -26,6 +31,8 @@ public class EnrollmentController {
     private StudentRepository studentRepository;
     @Resource
     private SemesterRepository semesterRepository;
+    @Resource
+    private DocumentService documentService;
 
     @GetMapping("/create")
     public ModelAndView getCreatePage(Enrollment enrollment, ModelAndView mav) {
@@ -89,4 +96,24 @@ public class EnrollmentController {
         return mav;
     }
 
+    @PostMapping("/{id}/upload")
+    public ModelAndView uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("id") Integer id, ModelAndView mav) {
+        try {
+            Optional<Enrollment> optionalEnrollment = enrollmentRepository.findById(id);
+            if (optionalEnrollment.isPresent()) {
+                Enrollment enrollment = optionalEnrollment.get();
+                String filename = StringUtils.cleanPath(file.getOriginalFilename());
+                Document document = documentService.save(enrollment, filename, file.getBytes());
+                document.setUrl(ServletUriComponentsBuilder
+                        .fromCurrentContextPath()
+                        .path("/enrollment/")
+                        .path(String.valueOf(enrollment.getId()))
+                        .path("/document/")
+                        .path(String.valueOf(document.getId()))
+                        .toUriString());
+                enrollmentRepository.save(enrollment);
+            }
+        } catch (Exception e) {}
+        return mav;
+    }
 }
