@@ -23,21 +23,25 @@
             <div class="form-group">
                 <label for="start">Início:</label>
                 <input th:field="*{start}" th:format="yyyy-MM-dd" type="date" class="form-control" id="start">
+                <p th:if="${#fields.hasErrors('start')}" th:errorclass="error" th:errors="*{start}" class="alert alert-danger" />
             </div>
 
             <div class="form-group">
                 <label for="end">Fim:</label>
                 <input th:field="*{end}" th:format="yyyy-MM-dd" type="date" class="form-control" id="end">
+                <p th:if="${#fields.hasErrors('end')}" th:errorclass="error" th:errors="*{end}" class="alert alert-danger" />
             </div>
 
             <div class="form-group">
                 <label for="schoolSemester">Período:</label>
                 <input th:field="*{schoolSemester}" type="number" class="form-control" id="schoolSemester">
+<!--                <p th:if="${#fields.hasErrors('schoolSemester')}" th:errorclass="error" th:errors="*{schoolSemester}" class="alert alert-danger" />-->
             </div>
 
             <div class="form-group">
                 <label for="year">Ano:</label>
                 <input th:field="*{year}" type="number" class="form-control" id="year">
+                <p th:if="${#fields.hasErrors('year')}" th:errorclass="error" th:errors="*{year}" class="alert alert-danger" />
             </div>
 
             <div class="form-group">
@@ -50,11 +54,12 @@
                             th:label="${institution.toString()}">
                     </option>
                 </select>
+                <p th:if="${#fields.hasErrors('institution')}" th:errorclass="error" th:errors="*{institution}" class="alert alert-danger" />
             </div>
 
             <div class="d-flex align-items-center justify-content-between gap-5 mt-4">
                 <button type="submit" class="btn btn-success w-50">Cadastrar</button>
-                <a th:href="@{/semester}" class="btn btn-secondary w-50">Cancelar</a>
+                <a th:href="@{/institution}" class="btn btn-secondary w-50">Cancelar</a>
             </div>
         </form>
     </main>

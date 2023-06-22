@@ -31,6 +31,7 @@
                             th:selected="${selectedStudent != null and selectedStudent.id == currentStudent.id}">
                     </option>
                 </select>
+                <p th:if="${#fields.hasErrors('student')}" th:errorclass="error" th:errors="*{student}" class="alert alert-danger" />
             </div>
 
             <div class="form-group" th:if="${selectedStudent != null}">
@@ -43,6 +44,7 @@
                             th:label="${currentSemester.toString()}">
                     </option>
                 </select>
+                <p th:if="${#fields.hasErrors('semester')}" th:errorclass="error" th:errors="*{semester}" class="alert alert-danger" />
             </div>
 
             <div class="form-group" th:if="${selectedStudent != null}">

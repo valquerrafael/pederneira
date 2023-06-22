@@ -1,20 +1,17 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
-import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
 import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Semester;
-import br.edu.ifpb.pweb2.pederneira.repository.EnrollmentRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
-import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -25,10 +22,6 @@ public class SemesterController {
     private SemesterRepository semesterRepository;
     @Resource
     private InstitutionRepository institutionRepository;
-    @Resource
-    private EnrollmentRepository enrollmentRepository;
-    @Resource
-    private StudentRepository studentRepository;
 
     @GetMapping
     public ModelAndView getHome(ModelAndView mav) {
@@ -46,10 +39,10 @@ public class SemesterController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Semester semester, BindingResult bindingResult,
+                               ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar semestre");
-            mav.setViewName("redirect:/semester");
+            mav.setViewName("layouts/semester/create");
             return mav;
         }
 
@@ -97,7 +90,7 @@ public class SemesterController {
     }
 
     @PutMapping("/update")
-    public ModelAndView update(Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView update(@Valid Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao atualizar semestre");
             mav.setViewName("redirect:/semester");
@@ -142,17 +135,6 @@ public class SemesterController {
             institutionToUpdate.setCurrentSemester(null);
             this.institutionRepository.saveAndFlush(institutionToUpdate);
         }
-
-        List<Enrollment> enrollments = this.enrollmentRepository.findBySemesterId(id);
-
-        for (Enrollment enrollment : enrollments) {
-            if (enrollment.equals(enrollment.getStudent().getCurrentEnrollment())) {
-                enrollment.getStudent().setCurrentEnrollment(null);
-                this.studentRepository.saveAndFlush(enrollment.getStudent());
-            }
-        }
-
-        this.enrollmentRepository.deleteAll(enrollments);
 
         this.semesterRepository.deleteById(id);
 
