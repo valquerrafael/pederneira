@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+          crossorigin="anonymous">
+    <title>Declaração</title>
+</head>
+<body>
+
+<div>
+    <header th:replace="~{fragments/header}"></header>
+
+    <main class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute">
+        <form th:method="post" th:object="${enrollment}" enctype="multipart/form-data"
+              th:action="@{/enrollment/create/upload/{id}(id=*{id})}"
+              class="w-25 bg-light text-dark border border-secondary rounded justify-content-center p-2">
+            <label for="file">Arquivo</label>
+            <input id="file" class="form-control" type="file" name="file" accept="application/pdf" />
+            <div class="d-flex align-items-center justify-content-between gap-5 mt-4">
+                <button th:text="Cadastrar" type="submit" class="btn btn-success w-50"></button>
+                <a th:href="@{/student}" class="btn btn-secondary w-50">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <footer th:replace="~{fragments/footer}"></footer>
+</div>
+
+</body>
+</html>
