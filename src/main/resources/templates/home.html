@@ -15,7 +15,7 @@
 <main class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute">
 
     <div class="w-25 bg-light text-dark border border-secondary rounded justify-content-center p-2">
-        <a th:href="@{/institution}" type="submit"
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/institution}" type="submit"
            class="btn btn-success w-100 mb-2 mt-2"
            style="font-size: 30px;">
             Instituição
