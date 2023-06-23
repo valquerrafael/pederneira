@@ -20,10 +20,10 @@ public class Semester {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "start", nullable = false)
+    @Column(name = "start_date", nullable = false)
     private LocalDate start;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "end", nullable = false)
+    @Column(name = "end_date", nullable = false)
     private LocalDate end;
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "institution_id", nullable = false)
