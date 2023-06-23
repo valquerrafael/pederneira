@@ -6,7 +6,7 @@ import br.edu.ifpb.pweb2.pederneira.model.Student;
 import br.edu.ifpb.pweb2.pederneira.repository.EnrollmentRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
-import jakarta.annotation.Resource;
+import jakarta.annotation.Resource; 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
