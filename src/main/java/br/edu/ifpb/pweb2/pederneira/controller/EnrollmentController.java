@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -49,7 +50,6 @@ public class EnrollmentController {
         }
 
         if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar declaração");
             mav.setViewName("layouts/enrollment/create");
             return mav;
         }
@@ -90,4 +90,20 @@ public class EnrollmentController {
         return mav;
     }
 
+    @GetMapping("/student/{id}/enrollments")
+    public ModelAndView viewEnrollments(@PathVariable("id")Integer studentId, ModelAndView mav){
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
+            List<Enrollment> enrollments = enrollmentRepository.findByStudent(student);
+
+            mav.addObject("student", student);
+            mav.addObject("enrollments", enrollments);
+            mav.setViewName("layouts/student/update");
+        } else {
+            mav.setViewName("redirect:/student");
+        }
+        return mav;
+    }
 }

@@ -1,7 +1,9 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
+import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
 import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Student;
+import br.edu.ifpb.pweb2.pederneira.repository.EnrollmentRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,6 +25,9 @@ public class StudentController {
     private StudentRepository studentRepository;
     @Resource
     private InstitutionRepository institutionRepository;
+
+    @Resource
+    private EnrollmentRepository enrollmentRepository;
 
     @GetMapping
     public ModelAndView getHome(ModelAndView mav) {
@@ -72,7 +78,8 @@ public class StudentController {
     }
 
     @GetMapping("/update/{id}")
-    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView getUpdatePage(@PathVariable(name = "id") Integer id,
+                                      ModelAndView mav, RedirectAttributes redirectAttributes) {
         Optional<Student> student = this.studentRepository.findById(id);
 
         if (student.isEmpty()) {
@@ -80,15 +87,23 @@ public class StudentController {
             mav.setViewName("redirect:/student");
             return mav;
         }
+        if (student.isPresent()) {
+            Student students = student.get();
+            List<Enrollment> enrollments = enrollmentRepository.findByStudent(students);
 
-        mav.addObject("student", student.get());
-        mav.addObject("institutions", this.institutionRepository.findAll());
-        mav.setViewName("layouts/student/update");
+            mav.addObject("student", students);
+            mav.addObject("enrollments", enrollments);
+            mav.addObject("institutions", this.institutionRepository.findAll());
+            mav.setViewName("layouts/student/update");
+        } else {
+            mav.setViewName("redirect:/student");
+        }
         return mav;
     }
 
     @PutMapping("/update")
-    public ModelAndView update(@Valid Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView update(@Valid Student student, BindingResult bindingResult, Enrollment enrollment,
+                               ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             mav.setViewName("layouts/student/update");
             return mav;
@@ -116,11 +131,20 @@ public class StudentController {
             return mav;
         }
 
+        Optional<Enrollment> enrollmentOptional = enrollmentRepository.findById(student.getCurrentEnrollment().getId());
+
+        if (enrollmentOptional.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Declaração não encontrada");
+            mav.setViewName("redirect:/student");
+            return mav;
+        }
+
         Student studentToUpdate = studentOptional.get();
 
         studentToUpdate.setName(student.getName());
         studentToUpdate.setRegistration(student.getRegistration());
         studentToUpdate.setCurrentInstitution(institution.get());
+        studentToUpdate.setCurrentEnrollment(enrollmentOptional.get());
 
         this.studentRepository.save(studentToUpdate);
         mav.setViewName("redirect:/student");
