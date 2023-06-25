@@ -1,5 +1,6 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
+import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
 import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Student;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
@@ -34,6 +35,13 @@ public class StudentController {
         mav.addObject("student", new Student());
         mav.addObject("institutions", this.institutionRepository.findAll());
         mav.setViewName("layouts/student/create");
+        return mav;
+    }
+
+    @GetMapping("/expired")
+    public ModelAndView getexpiredEnrollment(ModelAndView mav) {
+        mav.addObject("students", this.studentRepository.findStudentsWithoutEnrollment());
+        mav.setViewName("layouts/student/home");
         return mav;
     }
 
