@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,12 +29,42 @@ public class EnrollmentController {
     @Resource
     private SemesterRepository semesterRepository;
 
+
+    @GetMapping
+    public ModelAndView getHome(ModelAndView mav) {
+        mav.addObject("enrollments", this.enrollmentRepository.findAll());
+        mav.setViewName("layouts/enrollment/home");
+        return mav;
+    }
+
     @GetMapping("/create")
     public ModelAndView getCreatePage(Enrollment enrollment, ModelAndView mav) {
         mav.addObject("enrollment", new Enrollment());
         mav.addObject("students", this.studentRepository.findAll());
         mav.addObject("semesters", this.semesterRepository.findAll());
         mav.setViewName("layouts/enrollment/create");
+        return mav;
+    }
+
+    @GetMapping("/expired")
+    public ModelAndView getExpiredEnrollments(ModelAndView mav) {
+        List<Enrollment> expiredEnrollments = this.enrollmentRepository.findExpiredEnrollments();
+        mav.addObject("enrollments", expiredEnrollments);
+        mav.setViewName("layouts/enrollment/home");
+        return mav;
+    }
+
+
+    @GetMapping("/ending-soon")
+    public ModelAndView getEnrollmentsEndingSoon(@RequestParam(value = "days", required = false) Integer days, ModelAndView mav) {
+        if (days == null) {
+            mav.addObject("enrollments", Collections.emptyList());
+        } else {
+            LocalDate endDate = LocalDate.now().plusDays(days);
+            List<Enrollment> enrollmentsEndingSoon = this.enrollmentRepository.findEnrollmentsEndingSoon(endDate);
+            mav.addObject("enrollments", enrollmentsEndingSoon);
+        }
+        mav.setViewName("layouts/enrollment/home");
         return mav;
     }
 
