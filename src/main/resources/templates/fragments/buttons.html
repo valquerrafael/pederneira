@@ -3,3 +3,16 @@
     <button type="submit" th:text="${mainAction}" class="btn btn-success w-50"></button>
     <a th:href="@{${cancelUri}}" type="submit" class="btn btn-secondary w-50">Cancelar</a>
 </div>
+
+<div th:fragment="paginationButtons(entityName, pageableEntity)">
+    <span>
+        <a class="btn btn-secondary"
+           th:href="@{'/' + ${entityName} + '?page=' + ${pageableEntity.pageable.pageNumber}}"
+           th:if="${pageableEntity.hasPrevious()}"><</a>
+    </span>
+    <span>
+        <a class="btn btn-secondary"
+           th:href="@{'/' + ${entityName} + '?page=' + ${pageableEntity.pageable.pageNumber + 2}}"
+           th:if="${pageableEntity.hasNext()}">></a>
+    </span>
+</div>
