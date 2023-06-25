@@ -6,7 +6,7 @@
           rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
           crossorigin="anonymous">
-    <title>Instituição</title>
+    <title>Estudante</title>
 </head>
 <body>
 
@@ -21,10 +21,15 @@
                 Voltar
             </a>
             <div class="d-flex justify-content-between w-50 gap-5">
-                <a th:href="@{/enrollment/create}" type="submit"
+                <a th:href="@{/enrollment}" type="submit"
                    class="btn btn-success w-100 mb-2 mt-2"
                    style="font-size: 24px;">
-                    Cadastrar declaração
+                    Declaração
+                </a>
+                <a th:href="@{/student/expired}" type="submit"
+                   class="btn btn-success w-100 mb-2 mt-2"
+                   style="font-size: 24px;">
+                    Estudantes sem Declaração
                 </a>
                 <a th:href="@{/student/create}" type="submit"
                    class="btn btn-success w-100 mb-2 mt-2"
