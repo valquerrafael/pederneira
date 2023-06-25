@@ -9,6 +9,7 @@ import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -54,21 +55,18 @@ public class InstitutionController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Institution institution, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Institution institution, BindingResult bindingResult,
+                               ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar instituição");
-            mav.setViewName("redirect:/institution");
+            mav.setViewName("layouts/institution/create");
             return mav;
         }
-
         if (institution.getId() != null && this.institutionRepository.findById(institution.getId()).isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Instituição já cadastrada");
             mav.setViewName("redirect:/institution");
             return mav;
         }
-
         this.institutionRepository.save(institution);
-
         mav.setViewName("redirect:/institution");
         return mav;
     }
@@ -89,10 +87,10 @@ public class InstitutionController {
     }
 
     @PutMapping("/update")
-    public ModelAndView update(Institution institution, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView update(@Valid Institution institution, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao atualizar instituição");
-            mav.setViewName("redirect:/institution");
+//            redirectAttributes.addFlashAttribute("error", "Erro ao atualizar instituição");
+            mav.setViewName("layouts/institution/update");
             return mav;
         }
 
@@ -145,16 +143,7 @@ public class InstitutionController {
         }
 
         for (Semester semester : institution.getSemesters()) {
-            List<Enrollment> enrollments = this.enrollmentRepository.findBySemesterId(semester.getId());
-
-            for (Enrollment enrollment : enrollments) {
-                if (enrollment.equals(enrollment.getStudent().getCurrentEnrollment())) {
-                    enrollment.getStudent().setCurrentEnrollment(null);
-                    this.studentRepository.saveAndFlush(enrollment.getStudent());
-                }
-            }
-
-            this.enrollmentRepository.deleteAll(enrollments);
+            this.enrollmentRepository.deleteAll(this.enrollmentRepository.findBySemesterId(semester.getId()));
         }
 
         this.studentRepository.saveAll(institution.getStudents());

@@ -9,6 +9,7 @@ import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
 import br.edu.ifpb.pweb2.pederneira.service.DocumentService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -46,7 +48,7 @@ public class EnrollmentController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Enrollment enrollment, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Enrollment enrollment, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (enrollment.getStudent() != null && enrollment.getSemester() == null) {
             mav.addObject("enrollment", enrollment);
             mav.addObject("selectedStudent", enrollment.getStudent());
@@ -57,8 +59,7 @@ public class EnrollmentController {
         }
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar declaração");
-            mav.setViewName("redirect:/student");
+            mav.setViewName("layouts/enrollment/create");
             return mav;
         }
 
@@ -146,5 +147,22 @@ public class EnrollmentController {
                 .path("/document")
                 .path(String.valueOf(idDocument))
                 .toUriString();
+    }
+
+    @GetMapping("/student/{id}/enrollments")
+    public ModelAndView viewEnrollments(@PathVariable("id")Integer studentId, ModelAndView mav){
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
+            List<Enrollment> enrollments = enrollmentRepository.findByStudent(student);
+
+            mav.addObject("student", student);
+            mav.addObject("enrollments", enrollments);
+            mav.setViewName("layouts/student/update");
+        } else {
+            mav.setViewName("redirect:/student");
+        }
+        return mav;
     }
 }

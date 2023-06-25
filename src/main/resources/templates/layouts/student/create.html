@@ -23,11 +23,13 @@
             <div class="form-group">
                 <label for="name">Nome:</label>
                 <input th:field="*{name}" type="text" class="form-control" id="name">
+                <p th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}" class="alert alert-danger" />
             </div>
 
             <div class="form-group">
                 <label for="registration">Matrícula:</label>
                 <input th:field="*{registration}" type="text" class="form-control" id="registration">
+                <p th:if="${#fields.hasErrors('registration')}" th:errorclass="error" th:errors="*{registration}" class="alert alert-danger" />
             </div>
 
             <div class="form-group">
@@ -40,11 +42,12 @@
                             th:label="${institution.toString()}">
                     </option>
                 </select>
+<!--                <p th:if="${#fields.hasErrors('currentInstitutuion')}" th:errorclass="error" th:errors="*{currentInstitutuion}" class="alert alert-danger" />-->
             </div>
 
             <div class="d-flex align-items-center justify-content-between gap-5 mt-4">
                 <button type="submit" class="btn btn-success w-50">Cadastrar</button>
-                <a th:href="@{/student}" class="btn btn-secondary w-50">Cancelar</a>
+                <a th:href="@{/home}" class="btn btn-secondary w-50">Cancelar</a>
             </div>
         </form>
     </main>
