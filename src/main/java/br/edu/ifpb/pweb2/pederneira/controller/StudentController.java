@@ -1,6 +1,7 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
 import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
+import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
 import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Student;
 import br.edu.ifpb.pweb2.pederneira.repository.EnrollmentRepository;
@@ -53,11 +54,19 @@ public class StudentController {
         return mav;
     }
 
+    @GetMapping("/expired")
+    public ModelAndView getexpiredEnrollment(ModelAndView mav) {
+        mav.addObject("students", this.studentRepository.findStudentsWithoutEnrollment());
+        mav.setViewName("layouts/student/home");
+        return mav;
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public ModelAndView create(@Valid Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            mav.setViewName("layouts/student/create");
+            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar estudante");
+            mav.setViewName("redirect:/student");
             return mav;
         }
 
@@ -112,10 +121,11 @@ public class StudentController {
     }
 
     @PutMapping("/update")
-    public ModelAndView update(@Valid Student student, BindingResult bindingResult, Enrollment enrollment,
+    public ModelAndView update(Student student, BindingResult bindingResult, Enrollment enrollment,
                                ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            mav.setViewName("layouts/student/update");
+            redirectAttributes.addFlashAttribute("error", "Erro ao atualizar estudante");
+            mav.setViewName("redirect:/student");
             return mav;
         }
 
