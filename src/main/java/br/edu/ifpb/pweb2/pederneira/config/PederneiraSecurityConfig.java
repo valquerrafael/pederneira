@@ -5,7 +5,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -34,7 +33,7 @@ public class PederneiraSecurityConfig {
             .authenticated()
             .and()
             .formLogin(form -> form
-                .loginPage("/auth")
+                .loginPage("/layouts/login")
                 .defaultSuccessUrl("/home", true)
                 .permitAll())
             .logout(logout -> logout.logoutUrl("/auth/logout"));
@@ -49,11 +48,16 @@ public class PederneiraSecurityConfig {
     public UserDetailsManager users() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         UserDetails user = User.withUsername("valquer")
-                    .password(encoder.encode("flintstone"))
+                    .password(encoder.encode("pp1"))
                     .roles("ADMIN")
+                    .build();
+                    UserDetails user1 = User.withUsername("pedro")
+                    .password(encoder.encode("pp1"))
+                    .roles("STUDENT")
                     .build();
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
         users.createUser(user);
+        users.createUser(user1);
         return users;
     }
 
