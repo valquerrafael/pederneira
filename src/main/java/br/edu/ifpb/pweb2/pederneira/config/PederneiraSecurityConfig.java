@@ -51,7 +51,7 @@ public class PederneiraSecurityConfig {
                     .password(encoder.encode("pp1"))
                     .roles("ADMIN")
                     .build();
-                    UserDetails user1 = User.withUsername("pedro")
+        UserDetails user1 = User.withUsername("pedro")
                     .password(encoder.encode("pp1"))
                     .roles("STUDENT")
                     .build();
