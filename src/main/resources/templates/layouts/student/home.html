@@ -20,16 +20,16 @@
                style="font-size: 24px;">
                 Voltar
             </a>
-            <div class="d-flex justify-content-between w-50 gap-5">
+            <div class="d-flex justify-content-between w-50 gap-5" style="padding-left: 20%;">
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/student/create}" type="submit"
+                   class="btn btn-success w-100 mb-2 mt-2"
+                   style="font-size: 24px;">
+                    Cadastrar estudante
+                </a>
                 <a th:href="@{/enrollment/create}" type="submit"
                    class="btn btn-success w-100 mb-2 mt-2"
                    style="font-size: 24px;">
                     Cadastrar declaração
-                </a>
-                <a th:href="@{/student/create}" type="submit"
-                   class="btn btn-success w-100 mb-2 mt-2"
-                   style="font-size: 24px;">
-                    Cadastrar estudante
                 </a>
             </div>
         </div>
@@ -49,13 +49,13 @@
                     <td th:text="${student.registration}"></td>
                     <td th:text="${student.currentInstitution != null ? student.currentInstitution.toString() : 'Instituição não encontrada'}"></td>
                     <td th:text="${student.currentEnrollment != null ? student.currentEnrollment.toString() : 'Nenhuma declaração cadastrada'}"></td>
-                    <td class="bg-primary rounded">
-                        <a th:href="@{'/student/update/' + ${student.id}}"
+                    <td sec:authorize="hasRole('ADMIN')" class="bg-primary rounded">
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{'/student/update/' + ${student.id}}"
                            class="text-bg-primary" style="display: block; text-decoration: none;">
                             Editar
                         </a>
                     </td>
-                    <td class="bg-danger rounded">
+                    <td sec:authorize="hasRole('ADMIN')" class="bg-danger rounded">
                         <a th:href="@{'/student/delete/' + ${student.id}}"
                            class="text-bg-danger" style="display: block; text-decoration: none;">
                             Excluir
