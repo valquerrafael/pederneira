@@ -41,7 +41,9 @@ public class SemesterController {
     @PostMapping("/create")
     public ModelAndView create(@Valid Semester semester, BindingResult bindingResult,
                                ModelAndView mav, RedirectAttributes redirectAttributes) {
+
         if (bindingResult.hasErrors()) {
+            mav.addObject("institutions", this.institutionRepository.findAll());
             mav.setViewName("layouts/semester/create");
             return mav;
         }

@@ -45,8 +45,11 @@ public class StudentController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(@Valid Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Student student, BindingResult bindingResult,
+                               ModelAndView mav, RedirectAttributes redirectAttributes) {
+
         if (bindingResult.hasErrors()) {
+            mav.addObject("institutions", this.institutionRepository.findAll());
             mav.setViewName("layouts/student/create");
             return mav;
         }
@@ -104,7 +107,10 @@ public class StudentController {
     @PutMapping("/update")
     public ModelAndView update(@Valid Student student, BindingResult bindingResult, Enrollment enrollment,
                                ModelAndView mav, RedirectAttributes redirectAttributes) {
+
         if (bindingResult.hasErrors()) {
+            mav.addObject("enrollments", this.enrollmentRepository.findAll());
+            mav.addObject("institutions", this.institutionRepository.findAll());
             mav.setViewName("layouts/student/update");
             return mav;
         }
