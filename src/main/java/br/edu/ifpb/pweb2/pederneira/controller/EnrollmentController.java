@@ -9,6 +9,7 @@ import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,17 +40,24 @@ public class EnrollmentController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(@Valid Enrollment enrollment, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Enrollment enrollment, BindingResult bindingResult,
+                               ModelAndView mav, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            mav.addObject("students", this.studentRepository.findAll());
+            mav.addObject("semesters", this.semesterRepository.findAll());
+            if (enrollment.getStudent() != null) {
+                mav.addObject("enrollment", enrollment);
+                mav.addObject("selectedStudent", enrollment.getStudent());
+            }
+            mav.setViewName("layouts/enrollment/create");
+            return mav;
+        }
+
         if (enrollment.getStudent() != null && enrollment.getSemester() == null) {
             mav.addObject("enrollment", enrollment);
             mav.addObject("selectedStudent", enrollment.getStudent());
             mav.addObject("students", this.studentRepository.findAll());
             mav.addObject("semesters", this.semesterRepository.findByInstitutionId(enrollment.getStudent().getCurrentInstitution().getId()));
-            mav.setViewName("layouts/enrollment/create");
-            return mav;
-        }
-
-        if (bindingResult.hasErrors()) {
             mav.setViewName("layouts/enrollment/create");
             return mav;
         }
