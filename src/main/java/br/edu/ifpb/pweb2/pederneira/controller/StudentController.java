@@ -1,6 +1,5 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
-import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
 import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Student;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
@@ -46,8 +45,13 @@ public class StudentController {
     }
 
     @GetMapping("/expired")
-    public ModelAndView getexpiredEnrollment(ModelAndView mav) {
-        mav.addObject("students", this.studentRepository.findStudentsWithoutEnrollment());
+    public ModelAndView getExpiredEnrollment(
+        @RequestParam(defaultValue = "1") int page,
+        ModelAndView mav
+    ) {
+        int size = 3;
+        Pageable paging = PageRequest.of(page - 1, size);
+        mav.addObject("students", this.studentRepository.findStudentsWithoutEnrollment(paging));
         mav.setViewName("layouts/student/home");
         return mav;
     }
