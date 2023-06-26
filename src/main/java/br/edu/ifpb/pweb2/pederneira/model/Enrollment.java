@@ -29,6 +29,8 @@ public class Enrollment {
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
     private String observation;
+    @OneToOne
+    private Document document;
 
     public String getReceiptDateFormatted() {
         return receiptDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
