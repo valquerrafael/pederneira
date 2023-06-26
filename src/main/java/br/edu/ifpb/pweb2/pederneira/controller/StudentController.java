@@ -131,6 +131,12 @@ public class StudentController {
             return mav;
         }
 
+        if (student.getCurrentEnrollment() == null) {
+            redirectAttributes.addFlashAttribute("error", "Declaração não informada");
+            mav.setViewName("redirect:/student");
+            return mav;
+        }
+
         Optional<Enrollment> enrollmentOptional = enrollmentRepository.findById(student.getCurrentEnrollment().getId());
 
         if (enrollmentOptional.isEmpty()) {
