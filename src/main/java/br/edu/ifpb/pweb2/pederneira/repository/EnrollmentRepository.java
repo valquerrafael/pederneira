@@ -16,8 +16,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
     @Query("SELECT e FROM Enrollment e WHERE e.semester.end < current_date")
     List<Enrollment> findExpiredEnrollments();
 
-    @Query("SELECT e FROM Enrollment e WHERE e.semester.end >= current_date and e.semester.end <= :endDate")
+    @Query("SELECT e FROM Enrollment e WHERE e.semester.end = :endDate")
     List<Enrollment> findEnrollmentsEndingSoon(@Param("endDate") LocalDate endDate);
-
 
 }
