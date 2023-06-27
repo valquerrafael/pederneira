@@ -5,6 +5,7 @@ import br.edu.ifpb.pweb2.pederneira.model.Student;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -59,10 +60,9 @@ public class StudentController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar estudante");
-            mav.setViewName("redirect:/student");
+            mav.setViewName("layouts/student/create");
             return mav;
         }
 
@@ -109,10 +109,9 @@ public class StudentController {
     }
 
     @PutMapping("/update")
-    public ModelAndView update(Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView update(@Valid Student student, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao atualizar estudante");
-            mav.setViewName("redirect:/student");
+            mav.setViewName("layouts/student/update");
             return mav;
         }
 

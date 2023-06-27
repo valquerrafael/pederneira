@@ -7,6 +7,7 @@ import br.edu.ifpb.pweb2.pederneira.model.Student;
 import br.edu.ifpb.pweb2.pederneira.repository.EnrollmentRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
+import jakarta.validation.Valid;
 import br.edu.ifpb.pweb2.pederneira.service.DocumentService;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.PageRequest;
@@ -97,7 +98,7 @@ public class EnrollmentController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Enrollment enrollment, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Enrollment enrollment, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (enrollment.getStudent() != null && enrollment.getSemester() == null) {
             mav.addObject("enrollment", enrollment);
             mav.addObject("selectedStudent", enrollment.getStudent());
@@ -108,8 +109,8 @@ public class EnrollmentController {
         }
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar declaração");
-            mav.setViewName("redirect:/student");
+            // redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar declaração");
+            mav.setViewName("layouts/enrollment/create");
             return mav;
         }
 

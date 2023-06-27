@@ -5,6 +5,7 @@ import br.edu.ifpb.pweb2.pederneira.model.Semester;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -46,10 +47,9 @@ public class SemesterController {
     }
 
     @PostMapping("/create")
-    public ModelAndView create(Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView create(@Valid Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar semestre");
-            mav.setViewName("redirect:/semester");
+            mav.setViewName("layouts/semester/create");
             return mav;
         }
 
@@ -97,7 +97,7 @@ public class SemesterController {
     }
 
     @PutMapping("/update")
-    public ModelAndView update(Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+    public ModelAndView update(@Valid Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Erro ao atualizar semestre");
             mav.setViewName("redirect:/semester");
