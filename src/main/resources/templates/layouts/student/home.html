@@ -21,21 +21,27 @@
                 Voltar
             </a>
             <div class="d-flex justify-content-between w-50 gap-5">
-                <a th:href="@{/enrollment}" type="submit"
-                   class="btn btn-success w-100 mb-2 mt-2"
-                   style="font-size: 24px;">
-                    Declaração
-                </a>
-                <a th:href="@{/student/expired}" type="submit"
-                   class="btn btn-success w-100 mb-2 mt-2"
-                   style="font-size: 24px;">
-                    Estudantes sem Declaração
-                </a>
-                <a th:href="@{/student/create}" type="submit"
-                   class="btn btn-success w-100 mb-2 mt-2"
-                   style="font-size: 24px;">
-                    Cadastrar estudante
-                </a>
+                <div>
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/student/create}" type="submit"
+                        class="btn btn-success w-100 mb-2 mt-2"
+                        style="font-size: 24px;">
+                        Cadastrar estudante
+                    </a>    
+                </div>
+                <div>
+                    <a th:href="@{/student/expired}" type="submit"
+                        class="btn btn-success w-100 mb-2 mt-2"
+                        style="font-size: 24px;">
+                        Estudantes sem Declaração
+                    </a>
+                </div>
+                <div>
+                    <a th:href="@{/enrollment}" type="submit"
+                        class="btn btn-success w-100 mb-2 mt-2"
+                        style="font-size: 24px;">
+                        Declaração
+                    </a>
+                </div>
             </div>
         </div>
 
