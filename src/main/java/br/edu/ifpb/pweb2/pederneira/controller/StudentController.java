@@ -1,11 +1,12 @@
 package br.edu.ifpb.pweb2.pederneira.controller;
 
-import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
 import br.edu.ifpb.pweb2.pederneira.model.Institution;
 import br.edu.ifpb.pweb2.pederneira.model.Student;
 import br.edu.ifpb.pweb2.pederneira.repository.InstitutionRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import jakarta.annotation.Resource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,14 @@ public class StudentController {
     private InstitutionRepository institutionRepository;
 
     @GetMapping
-    public ModelAndView getHome(ModelAndView mav) {
-        mav.addObject("students", this.studentRepository.findAll());
+    public ModelAndView getHome(
+        ModelAndView mav,
+        @RequestParam(defaultValue = "1") int page
+    ) {
+        int size = 3;
+        Pageable paging = PageRequest.of(page - 1, size);
+        mav.addObject("students", this.studentRepository.findAll(paging));
+        mav.addObject("path", "");
         mav.setViewName("layouts/student/home");
         return mav;
     }
@@ -39,8 +46,14 @@ public class StudentController {
     }
 
     @GetMapping("/expired")
-    public ModelAndView getexpiredEnrollment(ModelAndView mav) {
-        mav.addObject("students", this.studentRepository.findStudentsWithoutEnrollment());
+    public ModelAndView getExpiredEnrollment(
+        @RequestParam(defaultValue = "1") int page,
+        ModelAndView mav
+    ) {
+        int size = 3;
+        Pageable paging = PageRequest.of(page - 1, size);
+        mav.addObject("students", this.studentRepository.findStudentsWithoutEnrollment(paging));
+        mav.addObject("path", "expired");
         mav.setViewName("layouts/student/home");
         return mav;
     }

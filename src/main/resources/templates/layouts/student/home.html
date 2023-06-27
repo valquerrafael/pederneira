@@ -70,6 +70,11 @@
             </tbody>
         </table>
 
+        <th:block th:if="${#strings.isEmpty(path)}"
+                  th:insert="~{fragments/buttons :: paginationButtons('student', ${students})}"></th:block>
+        <th:block th:if="${not #strings.isEmpty(path)}"
+                  th:insert="~{fragments/buttons :: paginationButtonsPath('student', ${students}, ${path})}"></th:block>
+
     </main>
 
     <footer th:replace="~{fragments/footer}"></footer>
