@@ -32,6 +32,7 @@ public class StudentController {
         int size = 3;
         Pageable paging = PageRequest.of(page - 1, size);
         mav.addObject("students", this.studentRepository.findAll(paging));
+        mav.addObject("path", "");
         mav.setViewName("layouts/student/home");
         return mav;
     }
@@ -52,6 +53,7 @@ public class StudentController {
         int size = 3;
         Pageable paging = PageRequest.of(page - 1, size);
         mav.addObject("students", this.studentRepository.findStudentsWithoutEnrollment(paging));
+        mav.addObject("path", "expired");
         mav.setViewName("layouts/student/home");
         return mav;
     }

@@ -9,6 +9,8 @@ import br.edu.ifpb.pweb2.pederneira.repository.SemesterRepository;
 import br.edu.ifpb.pweb2.pederneira.repository.StudentRepository;
 import br.edu.ifpb.pweb2.pederneira.service.DocumentService;
 import jakarta.annotation.Resource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -39,8 +41,14 @@ public class EnrollmentController {
     private DocumentService documentService;
 
     @GetMapping
-    public ModelAndView getHome(ModelAndView mav) {
-        mav.addObject("enrollments", this.enrollmentRepository.findAll());
+    public ModelAndView getHome(
+            ModelAndView mav,
+            @RequestParam(defaultValue = "1") int page
+    ) {
+        int size = 3;
+        Pageable paging = PageRequest.of(page - 1, size);
+        mav.addObject("enrollments", this.enrollmentRepository.findAll(paging));
+        mav.addObject("path", "");
         mav.setViewName("layouts/enrollment/home");
         return mav;
     }
@@ -55,23 +63,35 @@ public class EnrollmentController {
     }
 
     @GetMapping("/expired")
-    public ModelAndView getExpiredEnrollments(ModelAndView mav) {
-        List<Enrollment> expiredEnrollments = this.enrollmentRepository.findExpiredEnrollments();
-        mav.addObject("enrollments", expiredEnrollments);
+    public ModelAndView getExpiredEnrollments(
+            @RequestParam(defaultValue = "1") int page,
+            ModelAndView mav
+    ) {
+        int size = 3;
+        Pageable paging = PageRequest.of(page - 1, size);
+        mav.addObject("enrollments", this.enrollmentRepository.findExpiredEnrollments(paging));
+        mav.addObject("path", "expired");
         mav.setViewName("layouts/enrollment/home");
         return mav;
     }
 
 
     @GetMapping("/ending-soon")
-    public ModelAndView getEnrollmentsEndingSoon(@RequestParam(value = "days", required = false) Integer days, ModelAndView mav) {
+    public ModelAndView getEnrollmentsEndingSoon(
+        @RequestParam(value = "days", required = false) Integer days,
+        @RequestParam(defaultValue = "1") int page,
+        ModelAndView mav
+    ) {
+        int size = 3;
+        Pageable paging = PageRequest.of(page - 1, size);
         if (days == null) {
             mav.addObject("enrollments", Collections.emptyList());
         } else {
             LocalDate endDate = LocalDate.now().plusDays(days);
-            List<Enrollment> enrollmentsEndingSoon = this.enrollmentRepository.findEnrollmentsEndingSoon(endDate);
-            mav.addObject("enrollments", enrollmentsEndingSoon);
+            mav.addObject("enrollments", this.enrollmentRepository.findEnrollmentsEndingSoon(endDate, paging));
         }
+        mav.addObject("path", "ending-soon");
+        mav.addObject("days", days);
         mav.setViewName("layouts/enrollment/home");
         return mav;
     }

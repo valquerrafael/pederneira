@@ -60,6 +60,13 @@
 
         </table>
 
+        <th:block th:if="${#strings.isEmpty(path)}"
+                  th:insert="~{fragments/buttons :: paginationButtons('enrollment', ${enrollments})}"></th:block>
+        <th:block th:if="${#strings.equals(path, 'expired')}"
+                  th:insert="~{fragments/buttons :: paginationButtonsPath('enrollment', ${enrollments}, ${path})}"></th:block>
+        <th:block th:if="${#strings.equals(path, 'ending-soon')}"
+                  th:insert="~{fragments/buttons :: paginationButtonsPathParam('enrollment', ${enrollments}, ${path}, 'days', ${days})}"></th:block>
+
     </main>
 
     <footer th:replace="~{fragments/footer}"></footer>

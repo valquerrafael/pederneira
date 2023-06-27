@@ -16,3 +16,29 @@
            th:if="${pageableEntity.hasNext()}">></a>
     </span>
 </div>
+
+<div th:fragment="paginationButtonsPath(entityName, pageableEntity, path)">
+    <span>
+        <a class="btn btn-secondary"
+           th:href="@{'/' + ${entityName} + '/' + ${path} + '?page=' + ${pageableEntity.pageable.pageNumber}}"
+           th:if="${pageableEntity.hasPrevious()}"><</a>
+    </span>
+    <span>
+        <a class="btn btn-secondary"
+           th:href="@{'/' + ${entityName} + '/' + ${path} + '?page=' + ${pageableEntity.pageable.pageNumber + 2}}"
+           th:if="${pageableEntity.hasNext()}">></a>
+    </span>
+</div>
+
+<div th:fragment="paginationButtonsPathParam(entityName, pageableEntity, path, paramName, paramValue)">
+    <span>
+        <a class="btn btn-secondary"
+           th:href="@{'/' + ${entityName} + '/' + ${path} + '?page=' + ${pageableEntity.pageable.pageNumber} + '&' + ${paramName} + '=' + ${paramValue}}"
+           th:if="${pageableEntity.hasPrevious()}"><</a>
+    </span>
+    <span>
+        <a class="btn btn-secondary"
+           th:href="@{'/' + ${entityName} + '/' + ${path} + '?page=' + ${pageableEntity.pageable.pageNumber + 2} + '&' + ${paramName} + '=' + ${paramValue}}"
+           th:if="${pageableEntity.hasNext()}">></a>
+    </span>
+</div>
