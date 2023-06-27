@@ -56,8 +56,8 @@ public class PederneiraSecurityConfig {
                     .roles("STUDENT")
                     .build();
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-        users.createUser(user);
-        users.createUser(user1);
+        // users.createUser(user);
+        // users.createUser(user1);
         return users;
     }
 

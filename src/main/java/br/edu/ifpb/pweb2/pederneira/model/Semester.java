@@ -1,6 +1,7 @@
 package br.edu.ifpb.pweb2.pederneira.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,17 +20,27 @@ public class Semester {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotNull(message = "Campo obrigatório!")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "start", nullable = false)
     private LocalDate start;
+
+    @NotNull(message = "Campo obrigatório!")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end", nullable = false)
     private LocalDate end;
+
+    @NotNull(message = "Campo obrigatório!")
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "institution_id", nullable = false)
     private Institution institution;
+
+    @NotNull(message = "Campo obrigatório!")
     @Column(name = "year", nullable = false)
     private Integer year;
+
+    @Positive(message = "Número deve ser acima de zero.")
     @Column(name = "school_semester", nullable = false)
     private Integer schoolSemester;
 

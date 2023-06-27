@@ -1,6 +1,7 @@
 package br.edu.ifpb.pweb2.pederneira.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,16 +20,25 @@ public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "receipt_date", nullable = false)
     private LocalDate receiptDate;
+
     @ManyToOne
     @JoinColumn(name = "semester_id")
+    @NotNull(message = "Campo obrigatório!")
     private Semester semester;
+
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "student_id", nullable = false)
+    @NotNull(message = "Campo obrigatório!")
     private Student student;
+
     private String observation;
+
+    @OneToOne
+    private Document document;
 
     public String getReceiptDateFormatted() {
         return receiptDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));

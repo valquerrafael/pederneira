@@ -65,6 +65,8 @@
             </tbody>
         </table>
 
+        <div th:replace="~{fragments/buttons :: paginationButtons('institution', ${institutions})}"></div>
+
     </main>
 
     <footer th:replace="~{fragments/footer}"></footer>
