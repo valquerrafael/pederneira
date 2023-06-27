@@ -2,6 +2,7 @@ package br.edu.ifpb.pweb2.pederneira.repository;
 
 import br.edu.ifpb.pweb2.pederneira.model.Document;
 import br.edu.ifpb.pweb2.pederneira.model.Enrollment;
+import br.edu.ifpb.pweb2.pederneira.model.Student;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,5 +25,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
 
     @Query("SELECT e FROM Enrollment e WHERE e.semester.end = :endDate")
     Page<Enrollment> findEnrollmentsEndingSoon(@Param("endDate") LocalDate endDate, Pageable page);
+
+    List<Enrollment> findByStudent(Student student);
 
 }

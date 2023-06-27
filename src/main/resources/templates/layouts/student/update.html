@@ -33,6 +33,18 @@
             </div>
 
             <div class="form-group">
+                <label for="institution">Declaração atual:</label>
+                <select class="form-control dropdown-toggle" name="enrollmentId" th:field="*{currentEnrollment}" id="enrollment">
+                    <option class="dropdown-item" value="">Selecione a declaração</option>
+                    <option class="dropdown-item"
+                            th:each="enrollment : ${enrollments}"
+                            th:value="${enrollment.id}"
+                            th:label="${enrollment.toString()}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="institution">Instituição atual:</label>
                 <select class="form-control dropdown-toggle" th:field="*{currentInstitution}" id="institution">
                     <option class="dropdown-item" value="">Selecione a instituição</option>

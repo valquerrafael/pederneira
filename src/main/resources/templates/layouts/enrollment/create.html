@@ -20,7 +20,7 @@
 
             <input type="hidden" th:field="*{id}" />
 
-            <div class="form-group" th:classappend="${selectedStudent != null} ? 'd-none' : ''">
+            <div class="form-group">
                 <label for="student">Estudante:</label>
                 <select class="form-control dropdown-toggle" th:field="*{student}" id="student">
                     <option class="dropdown-item" value="">Selecione o estudante</option>
@@ -34,7 +34,7 @@
                 <p th:if="${#fields.hasErrors('student')}" th:errorclass="error" th:errors="*{student}" class="alert alert-danger" />
             </div>
 
-            <div class="form-group" th:if="${selectedStudent != null}">
+            <div class="form-group">
                 <label for="semester">Período:</label>
                 <select class="form-control dropdown-toggle" th:field="*{semester}" id="semester">
                     <option class="dropdown-item" value="">Selecione o período</option>
@@ -47,7 +47,7 @@
                 <p th:if="${#fields.hasErrors('semester')}" th:errorclass="error" th:errors="*{semester}" class="alert alert-danger" />
             </div>
 
-            <div class="form-group" th:if="${selectedStudent != null}">
+            <div class="form-group">
                 <label for="observation">Observação:</label>
                 <input th:field="*{observation}" type="text" class="form-control" id="observation">
             </div>

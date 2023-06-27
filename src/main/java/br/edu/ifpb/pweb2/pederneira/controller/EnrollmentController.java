@@ -99,17 +99,22 @@ public class EnrollmentController {
 
     @PostMapping("/create")
     public ModelAndView create(@Valid Enrollment enrollment, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            mav.addObject("students", this.studentRepository.findAll());
+            mav.addObject("semesters", this.semesterRepository.findAll());
+            if (enrollment.getStudent() != null) {
+                mav.addObject("enrollment", enrollment);
+                mav.addObject("selectedStudent", enrollment.getStudent());
+            }
+            mav.setViewName("layouts/enrollment/create");
+            return mav;
+        }
+
         if (enrollment.getStudent() != null && enrollment.getSemester() == null) {
             mav.addObject("enrollment", enrollment);
             mav.addObject("selectedStudent", enrollment.getStudent());
             mav.addObject("students", this.studentRepository.findAll());
             mav.addObject("semesters", this.semesterRepository.findByInstitutionId(enrollment.getStudent().getCurrentInstitution().getId()));
-            mav.setViewName("layouts/enrollment/create");
-            return mav;
-        }
-
-        if (bindingResult.hasErrors()) {
-            // redirectAttributes.addFlashAttribute("error", "Erro ao cadastrar declaração");
             mav.setViewName("layouts/enrollment/create");
             return mav;
         }
@@ -187,6 +192,23 @@ public class EnrollmentController {
         }
 
         mav.setViewName("redirect:/student");
+        return mav;
+    }
+
+    @GetMapping("/student/{id}/enrollments")
+    public ModelAndView viewEnrollments(@PathVariable("id")Integer studentId, ModelAndView mav){
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
+            List<Enrollment> enrollments = enrollmentRepository.findByStudent(student);
+
+            mav.addObject("student", student);
+            mav.addObject("enrollments", enrollments);
+            mav.setViewName("layouts/student/update");
+        } else {
+            mav.setViewName("redirect:/student");
+        }
         return mav;
     }
 
