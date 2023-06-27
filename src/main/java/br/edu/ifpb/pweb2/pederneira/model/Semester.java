@@ -23,13 +23,11 @@ public class Semester {
 
     @NotNull(message = "Campo obrigatório!")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Future(message = "Data deve ser futura!")
     @Column(name = "start", nullable = false)
     private LocalDate start;
 
     @NotNull(message = "Campo obrigatório!")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Future(message = "Data deve ser futura!")
     @Column(name = "end", nullable = false)
     private LocalDate end;
 
@@ -39,7 +37,6 @@ public class Semester {
     private Institution institution;
 
     @NotNull(message = "Campo obrigatório!")
-    @Min(value = 2023, message = "O número deve ser maior ou igual a 2023.")
     @Column(name = "year", nullable = false)
     private Integer year;
 

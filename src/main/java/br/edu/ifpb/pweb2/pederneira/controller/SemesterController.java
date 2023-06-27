@@ -98,8 +98,10 @@ public class SemesterController {
     }
 
     @PutMapping("/update")
-    public ModelAndView update(@Valid Semester semester, BindingResult bindingResult, ModelAndView mav, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
+    public ModelAndView update(@Valid Semester semester, BindingResult bindingResult,
+                               ModelAndView mav, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasFieldErrors("start") || bindingResult.hasFieldErrors("end")) {
             redirectAttributes.addFlashAttribute("error", "Erro ao atualizar semestre");
             mav.setViewName("redirect:/semester");
             return mav;
