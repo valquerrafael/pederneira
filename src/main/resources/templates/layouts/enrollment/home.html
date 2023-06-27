@@ -77,7 +77,7 @@
             var days = prompt("Informe a quantidade de dias para declarações a vencer:");
             if (days !== null) {
                 var url = event.target.getAttribute("href");
-                url += "?days=" + days;
+                url += "?days=" + (Number.isInteger(parseInt(days)) ? days : 0);
                 window.location.href = url;
             }
         }
